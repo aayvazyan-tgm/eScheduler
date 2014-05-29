@@ -2,24 +2,17 @@ package escheduler.controller;
 
 import escheduler.model.*;
 
-public class NotificationsController implements NotificationPosted 
+public class NotificationsController
 {
-	public void addNotitifikation(NType type, User source) {
-
+	public boolean addNotitification(NType type, User source, Event trigger) {
+		return false;
 	}
 
-	public void markAsRead(Notification notification) {
-
+	public boolean markAsRead(Notification notification) {
+		return false;
 	}
 
 	public String getDetails(Notification notification) {
 		return null;
-	}
-
-	/**
-	 * @see View.Controller.NotificationPosted#post()
-	 */
-	public void post() {
-
 	}
 }

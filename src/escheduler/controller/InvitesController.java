@@ -2,17 +2,22 @@ package escheduler.controller;
 
 import escheduler.model.*;
 
+/**
+ * 
+ * @author Ari Ayvazyan
+ * @version 20140529.0
+ */
 public class InvitesController
 {
-	public void sendInvite(User user) {
-
+	public boolean sendInvite(User user, Event event) {
+		return false;
 	}
 
-	public void acceptInvite(Event event) {
-
+	public boolean acceptInvite(User user, Event event) {
+		return false;
 	}
 
-	public void declineInvite(Event event) {
-
+	public boolean declineInvite(User user, Event event) {
+		return false;
 	}
 }
