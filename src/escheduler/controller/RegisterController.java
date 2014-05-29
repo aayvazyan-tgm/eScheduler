@@ -3,7 +3,6 @@ package escheduler.controller;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,7 +13,7 @@ import escheduler.model.User;
  * This class handles user registrations in the System.
  * 
  * @author Andreas Willinger
- * @version 20140529.1
+ * @version 29.05.2014
  */
 public class RegisterController 
 {
@@ -47,9 +46,7 @@ public class RegisterController
 		
 		// then, create a new transaction and actually save the user
 		Transaction tx = session.beginTransaction();
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
+		User user = new User(username, password);
 		
 		try
 		{

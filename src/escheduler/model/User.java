@@ -17,13 +17,19 @@ import javax.validation.constraints.*;
 @Entity
 public class User
 {
-	/** The username. */
+	/** the unique username. */
 	@Id
 	private String username;
 	
-	/** The password. */
+	/** the correspodenting password. */
 	@NotNull
 	private String password;
+	
+	public User(String username, String password)
+	{
+		this.username = username;
+		this.password = password;
+	}
 
 	/**
 	 * Gets the username.

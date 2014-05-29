@@ -8,16 +8,15 @@ import javax.validation.constraints.*;
 /**
  * An Event, which can be identified by:
  * 
- * a unique ID, name, description, organisator, type, participants and eventdates
+ * A unique ID, name, description, organisator, type, participants and eventdates
  * @author Andreas Willinger
  * @version 29.05.2014
  */
 @NamedQueries({
-	@NamedQuery(name = "getEventInformation", query = "FROM Event e WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventParticipants", query = "FROM Event e INNER JOIN e.participants p INNER JOIN p.user INNER JOIN p.eventdate WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventComplete", query = "FROM Event e INNER JOIN e.participants p INNER JOIN e.comments c INNER JOIN e.eventdates d INNER JOIN e.organisator o WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventParticipants", query = "FROM Event e INNER JOIN e.organisator o INNER JOIN e.participants p INNER JOIN p.user INNER JOIN p.eventdate WHERE e.ID = :ID"),
 	@NamedQuery(name = "getEventDates", query = "FROM Event e INNER JOIN e.eventdates WHERE e.ID = :ID"),
 	@NamedQuery(name = "getEventComments", query = "FROM Event e INNER JOIN e.comments c INNER JOIN c.author WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventDates", query = "FROM Event e INNER JOIN e.eventdates WHERE e.ID = :ID"),
 	@NamedQuery(name = "getEventsForUser", query = "FROM Event e INNER JOIN e.participants p WHERE e.User = :user OR p = :user")
 })
 @Entity
@@ -32,21 +31,20 @@ public class Event
 	@NotNull
 	private String name;
 	
-	/** The description. */
-	@NotNull
+	/** description of the event. */
 	private String description;
 	
-	/** The votingactive. */
+	/** is voting active. */
 	private boolean votingactive;
 	
 	/** The organisator. */
 	@NotNull
 	private User organisator;
 	
-	/** The type. */
+	/** type: may either be multi-vote (multiple users can vote on a date) or single-vote. */
 	private EType type;
 	
-	/** The participants. */
+	/** The participants, each with a user, their vote and invite state. */
 	@OneToMany
 	private Collection<Participant> participants;
 	
@@ -68,15 +66,6 @@ public class Event
 		return this.ID;
 	}
 	
-	/**
-	 * Sets the id.
-	 *
-	 * @param ID the new id
-	 */
-	public void setID(Long ID)
-	{
-		this.ID = ID;
-	}
 	
 	/**
 	 * Gets the name.

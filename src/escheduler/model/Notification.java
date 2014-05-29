@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * @version 29.05.2014
  */
 @NamedQueries({
-	@NamedQuery(name = "FROM Notification n WHERE n.trigger IN (SELECT p.event FROM Participant p WHERE p.user = :user)", query = "")
+	@NamedQuery(name = "getNotificationsForUser", query = "FROM Notification n INNER JOIN n.target ta INNER JOIN n.trigger tr WHERE ta.username = :user")
 })
 @Entity
 public class Notification 
@@ -31,16 +31,29 @@ public class Notification
 	private Date date;
 	
 	/** The description. */
-	@NotNull
 	private String description;
 	
-	/** The source. */
-	@ManyToOne(optional = false)
-	private User source;
+	/** the target */
+	@NotNull
+	@OneToMany
+	private User target;
 	
 	/** The trigger. */
-	@ManyToOne(optional = false)
+	@ManyToOne
 	private Event trigger;
+	
+	/** users who have read this notification **/
+	@OneToMany
+	private boolean read;
+	
+	public Notification(NType type, Date date, String description, User target, Event trigger)
+	{
+		this.type = type;
+		this.date = date;
+		this.description = description;
+		this.target = target;
+		this.trigger = trigger;
+	}
 	
 	/**
 	 * Gets the id.
@@ -50,16 +63,6 @@ public class Notification
 	public Long getID()
 	{
 		return this.ID;
-	}
-	
-	/**
-	 * Sets the id.
-	 *
-	 * @param ID the new id
-	 */
-	public void setID(Long ID)
-	{
-		this.ID = ID;
 	}
 	
 	/**
@@ -121,25 +124,23 @@ public class Notification
 	{
 		this.description = description;
 	}
-
+	
 	/**
-	 * Gets the source.
-	 *
-	 * @return the source
+	 * Gets the target.
+	 * 
+	 * @return the target 
 	 */
-	public User getSource() 
-	{
-		return source;
+	public User getTarget() {
+		return target;
 	}
-
+	
 	/**
-	 * Sets the source.
-	 *
-	 * @param source the new source
+	 * Gets the target.
+	 * 
+	 * @param target the new target
 	 */
-	public void setSource(User source)
-	{
-		this.source = source;
+	public void setTarget(User target) {
+		this.target = target;
 	}
 
 	/**
@@ -161,6 +162,23 @@ public class Notification
 		this.trigger = trigger;
 	}
 	
+	/**
+	 * Gets the read status of this notification.
+	 * 
+	 * @return the read status of this notification.
+	 */
+	public boolean getRead()
+	{
+		return this.read;
+	}
 	
-
+	/**
+	 * Sets the read status of this notification.
+	 * 
+	 * @param the new read status.
+	 */
+	public void setRead(boolean read)
+	{
+		this.read = read;
+	}
 }

@@ -14,20 +14,27 @@ import javax.persistence.*;
 @Entity
 public class Participant 
 {
-	/** The status. */
+	/** The invitation status (true = participating, false = pending). */
 	private boolean status;
 	
 	/** The user. */
 	@ManyToOne(optional = false)
 	private User user;
 	
-	/** The eventdate. */
+	/** the eventdate the user has voted on. */
 	@ManyToOne(optional = true)
 	private Eventdate eventdate;
 	
-	/** The event. */
+	/** hibernate should fill this automatically. */
 	@ManyToOne
 	private Event event;
+	
+	public Participant(boolean status, User user, Event event)
+	{
+		this.status = status;
+		this.user = user;
+		this.event = event;
+	}
 
 	/**
 	 * Checks if is status.

@@ -7,7 +7,6 @@ package escheduler.model;
  */
 public enum NType 
 {
-	
 	/** A date got fixed */
 	DATE_FIXED,
 	

@@ -14,18 +14,48 @@ import javax.persistence.*;
 @Entity
 public class Eventdate 
 {
-	/** The start. */
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long ID;
+	
+	/** The start date. */
 	@NotNull
 	private Date start;
 	
-	/** The end. */
+	/** The end date. */
 	@NotNull
 	private Date end;
 	
-	/** The event. */
-	@ManyToOne(optional = false)
+	/** The event (hibernate should fill this automatically). */
+	@ManyToOne
 	private Event event;
-
+	
+	public Eventdate(Date start, Date end, Event event)
+	{
+		this.start = start;
+		this.end = end;
+		this.event = event;
+	}
+	
+	/**
+	 * Gets the ID.
+	 * 
+	 * @return the ID
+	 */
+	public Long getID()
+	{
+		return ID;
+	}
+	
+	/**
+	 * Sets the ID
+	 * 
+	 * @param ID the new ID
+	 */
+	public void setID(Long ID)
+	{
+		this.ID = ID;
+	}
 	/**
 	 * Gets the start.
 	 *

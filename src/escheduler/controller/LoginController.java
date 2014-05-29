@@ -7,9 +7,10 @@ import escheduler.model.*;
 import org.hibernate.*;
 
 /**
+ * This class handles all login requests made by the User.
  * 
  * @author Andreas Willinger
- * @version 20140529.1
+ * @version 29.05.2014
  */
 public class LoginController 
 {
