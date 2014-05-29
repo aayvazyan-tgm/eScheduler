@@ -5,6 +5,13 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+/**
+ * This class represents a comment posted on an event, identified by:
+ * 
+ * date, author, event, text
+ * 
+ * @author Andreas Willinger
+ */
 @NamedQueries({
 	@NamedQuery(name = "getCommentDetails", query = "SELECT * FROM Comment c WHERE c = :comment")
 })
@@ -22,8 +29,6 @@ public class Comment
 	private User author;
 	@ManyToOne(optional = false)
 	private Event event;
-	
-	private EntityManager entityManager;
 	
 	public Long getID()
 	{
