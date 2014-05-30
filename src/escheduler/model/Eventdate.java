@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.validation.constraints.*;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+
 /**
  * A date proposal on an event, aka. a voting option.
  * 
@@ -27,6 +29,7 @@ public class Eventdate
 	private Date end;
 	
 	/** The event (hibernate should fill this automatically). */
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
 	private Event event;
 	

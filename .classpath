@@ -87,6 +87,8 @@
 	<classpathentry kind="lib" path="lib/vaadin-all-7.2.1/lib/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="lib" path="lib/vaadin-all-7.2.1/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/vaadin-all-7.2.1/lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/h2-1.4.178.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

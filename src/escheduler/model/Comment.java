@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.Cascade;
+
 /**
  * This class represents a comment posted on an event, identified by:
  * 
@@ -33,10 +35,12 @@ public class Comment
 	private String text;
 	
 	/** The author. */
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne(optional = false)
 	private User author;
 	
 	/** The event, which the comment was posted on. */
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne(optional = false)
 	private Event event;
 	

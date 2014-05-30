@@ -109,7 +109,6 @@ public class EventsController
 		
 		try
 		{
-			session.save(participant);
 			session.update(e);
 			tx.commit();
 			
@@ -171,7 +170,6 @@ public class EventsController
 		
 		try
 		{
-			session.delete(pc);
 			session.update(event);
 			tx.commit();
 			
@@ -304,7 +302,6 @@ public class EventsController
 		// and save it to the database
 		try
 		{
-			session.save(c);
 			session.update(event);
 			tx.commit();
 			
@@ -361,7 +358,6 @@ public class EventsController
 		
 		try
 		{
-			session.delete(comment);
 			session.update(event);
 			
 			tx.commit();

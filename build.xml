@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eScheduler" default="war" basedir=".">
+	<!-- Include general properties -->
+	<property file="build.properties" />
+	
+	<!-- The name of our deployed *.war file -->
+	<property name="war.file_name" value="${project.name}.war"/>
+	
+	<!-- Sources, Libraries -->
+	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="lib" />
+	
+	<!-- Our build directories-->
+	<property name="build.dir" value="build" />
+	<property name="class.dir" value="${build.dir}/classes" />
+	<property name="report.dir" value="${build.dir}/test_reports" />
+	<property name="war.dir" value="${build.dir}/war" />
+	<property name="web.dir" value="web" />
+	<property name="web.xml_file" value="${web.dir}/WEB-INF/web.xml" />
+	
+	<!-- Timestamp (for the .war-METAINF) -->
+	<tstamp prefix="build-info">
+		<format property="current-date" pattern="dd.mm.YYYY" locale="en" />
+		<format property="current-time" pattern="HH:mm:ss" locale="en" />
+	</tstamp>
+	
+	<!-- Classpaths -->
+	<path id="project.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${class.dir}" />
+	</path>
+	
+	<!-- Required for the start/stop/deploy/undeploy tasks -->
+	<path id="catalina.ant.classpath">
+		<fileset dir="ant/">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<!-- Define our Tasks to interfere with the Tomcat Application Server -->
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask"><classpath refid="catalina.ant.classpath" /></taskdef>
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask"><classpath refid="catalina.ant.classpath" /></taskdef>
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask"><classpath refid="catalina.ant.classpath" /></taskdef>
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"><classpath refid="catalina.ant.classpath" /></taskdef>
+	
+	<!-- Targets -->
+	<target name="start" description="start application in tomcat">
+		<start url="${tomcat.manager.url}" username="${tomcat.manager.username}"
+			password="${tomcat.manager.password}" path="/${project.name}" />
+	</target>
+	
+	<target name="stop" description="stop application in tomcat">
+		<stop url="${tomcat.manager.url}" username="${tomcat.manager.username}"
+			password="${tomcat.manager.password}" path="/${project.name}" />
+	</target>
+	
+	<target name="deploy" description="deploy from tomcat">
+		<echo>deploying to tomcat server</echo>
+		<deploy
+			url="${tomcat.manager.url}"
+			username="${tomcat.manager.username}"
+			password="${tomcat.manager.password}"
+			path="/${project.name}"
+			war="file:${user.dir}/${war.dir}/${war.file_name}"
+		/>
+	</target>
+	
+	<target name="undeploy" description="undeploy from tomcat">
+		<echo>undeploying from tomcat server</echo>
+		<undeploy
+			failonerror = "no"
+			url="${tomcat.manager.url}"
+			username="${tomcat.manager.username}"
+			password="${tomcat.manager.password}"
+			path="/${project.name}"
+		/>
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${class.dir}" />
+		
+		<!-- Required for Hibernate to work properly -->
+		<copy file="${src.dir}/hibernate.cfg.xml" tofile="${class.dir}/hibernate.cfg.xml"/>
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false"/>
+	</target>
+	
+	<!-- Creates a deployable .war File -->
+	<target name="war" depends="clean,compile">
+		<mkdir dir="${war.dir}" />
+		<war warfile="${war.dir}/${war.file_name}" webxml="${web.xml_file}">
+			<classes dir="${class.dir}" />
+			<fileset dir="${web.dir}">
+				<!-- we have to exclude this since web.xml is an attribute of the war tag above -->
+				<exclude name="WEB-INF/web.xml" />
+			</fileset>
+			<lib dir="${lib.dir}" />
+			<manifest>
+				<attribute name="Built-By" value="${builder}" />
+				<attribute name="Built-On" value="${build-info.current-date}" />
+				<attribute name="Bullt-At" value="${build-info.current-time}" />
+			</manifest>
+		</war>
+	</target>
+
+	<target name="test" depends="compile">
+		<mkdir dir="${report.dir}" />
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath refid="project.classpath" />
+			<!-- Formatted output -->
+			<formatter type="xml" />
+				
+			<batchtest fork="yes" todir="${report.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="clean" depends="">
+		<delete dir="${class.dir}" />
+		<delete dir="${report.dir}" />
+		<delete dir="${war.dir}" />
+		<delete dir="${build.dir} "/>
+	</target>
+	
+	<target name="build-and-deploy" depends="war, deploy" />
+</project>

@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.Cascade;
+
 /**
  * Notifies the User about changes on Events he participates or owns/manages.
  * 
@@ -35,15 +37,16 @@ public class Notification
 	
 	/** the target */
 	@NotNull
-	@OneToMany
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@ManyToOne
 	private User target;
 	
 	/** The trigger. */
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
 	private Event trigger;
 	
 	/** users who have read this notification **/
-	@OneToMany
 	private boolean read;
 	
 	public Notification(NType type, Date date, String description, User target, Event trigger)

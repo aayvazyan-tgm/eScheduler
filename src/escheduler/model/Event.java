@@ -5,6 +5,8 @@ import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.Cascade;
+
 /**
  * An Event, which can be identified by:
  * 
@@ -46,14 +48,17 @@ public class Event
 	
 	/** The participants, each with a user, their vote and invite state. */
 	@OneToMany
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Participant> participants;
 	
 	/** The comments. */
 	@OneToMany
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Comment> comments;
 	
 	/** The eventdates. */
 	@OneToMany
+	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Eventdate> eventdates;
 	
 	/**

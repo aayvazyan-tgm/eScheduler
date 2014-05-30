@@ -1,8 +1,8 @@
 package escheduler.controller;
 
 import java.util.*;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.hibernate.*;
 
 import escheduler.model.*;
@@ -52,7 +52,6 @@ public class InvitesController
 		
 		try
 		{
-			session.update(pc);
 			session.update(event);
 			tx.commit();
 			
@@ -110,8 +109,6 @@ public class InvitesController
 		
 		try
 		{
-			// "clean" cleanup - remove the linked object too
-			session.delete(pc);
 			session.update(event);
 			tx.commit();
 			
@@ -131,6 +128,48 @@ public class InvitesController
 			}
 			return false;
 		}
+	}
+	
+	/**
+	 * Gets all pending Invites for a user.
+	 * 
+	 * @param u The user to get the invites for.
+	 * @return A List containing Events to which the user was invited to, or null on failure
+	 */
+	public List<Event> getInvites(User u)
+	{
+		if(u == null)
+			return null;
+		
+		Session session = SessionManager.getInstance().getHibernateSession();
+		
+		if(session == null)
+			return null;
+		
+		// prepare query
+		Query query = session.getNamedQuery("getInvitesForUser")
+						.setString("user", u.getUsername());
+		
+		// first, get all ROWS
+		@SuppressWarnings("unchecked")
+		List<Event> results = (List<Event>)query.list();
+		@SuppressWarnings("rawtypes")
+		Iterator it = results.iterator();
+		
+		List<Event> events = new ArrayList<Event>();
+		
+		// iterate over all of them
+		while(it.hasNext())
+		{
+			// then, get all columns for each row
+			Object[] col = (Object[])it.next();
+			if(col.length == 0) continue;
+			Event event = (Event)col[0];
+			
+			events.add(event);
+		}
+		
+		return events;
 	}
 	
 	/**

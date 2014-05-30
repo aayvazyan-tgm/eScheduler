@@ -54,7 +54,6 @@ public class NewEventController
 			catch(RuntimeException ex2)
 			{
 				lg.error("Error while rolling back Transaction", ex2);
-				//TODO: Proper exception handling
 			}
 			
 			return false;

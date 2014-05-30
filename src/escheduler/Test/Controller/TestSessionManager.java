@@ -16,7 +16,7 @@ import escheduler.view.IViewElement;
 public class TestSessionManager {
 	
 	@Test
-	public void InstanceEquality() {
+	public void testInstanceEquality() {
 		SessionManager sm=SessionManager.getInstance();
 		SessionManager sm2=SessionManager.getInstance();
 		assertEquals(sm, sm2);
