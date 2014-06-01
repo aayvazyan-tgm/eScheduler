@@ -14,7 +14,6 @@ import escheduler.controller.NewEventController;
 import escheduler.model.EType;
 import escheduler.model.Event;
 import escheduler.model.Eventdate;
-import escheduler.model.Participant;
 import escheduler.model.User;
 
 /**

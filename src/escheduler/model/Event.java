@@ -6,20 +6,23 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * An Event, which can be identified by:
  * 
  * A unique ID, name, description, organisator, type, participants and eventdates
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 @NamedQueries({
-	@NamedQuery(name = "getEventComplete", query = "FROM Event e INNER JOIN e.participants p INNER JOIN e.comments c INNER JOIN e.eventdates d INNER JOIN e.organisator o WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventParticipants", query = "FROM Event e INNER JOIN e.organisator o INNER JOIN e.participants p INNER JOIN p.user INNER JOIN p.eventdate WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventDates", query = "FROM Event e INNER JOIN e.eventdates WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventComments", query = "FROM Event e INNER JOIN e.comments c INNER JOIN c.author WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventsForUser", query = "FROM Event e INNER JOIN e.participants p WHERE e.organisator = :user OR p = :user")
+	@NamedQuery(name = "getEventComplete", query = "FROM Event e LEFT JOIN e.participants p LEFT JOIN e.comments c LEFT JOIN e.eventdates d INNER JOIN e.organisator o WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventParticipants", query = "FROM Event e INNER JOIN e.organisator o LEFT JOIN e.participants p WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventDates", query = "FROM Event e LEFT JOIN e.eventdates WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventComments", query = "FROM Event e LEFT JOIN e.comments c WHERE e.ID = :ID"),
+	@NamedQuery(name = "getEventsForUser", query = "FROM Event e LEFT JOIN e.participants p WHERE e.organisator.username = :user OR p.user.username = :user"),
+	@NamedQuery(name = "getInvitesForUser", query = "FROM Event e LEFT JOIN e.participants p WHERE p.user.username = :username AND p.status = false")
 })
 @Entity
 public class Event 
@@ -42,7 +45,6 @@ public class Event
 	/** The organisator. */
 	@NotNull
 	@ManyToOne(optional = false)
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User organisator;
 	
 	/** type: may either be multi-vote (multiple users can vote on a date) or single-vote. */
@@ -50,16 +52,19 @@ public class Event
 	
 	/** The participants, each with a user, their vote and invite state. */
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Participant> participants;
 	
 	/** The comments. */
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Comment> comments;
 	
 	/** The eventdates. */
 	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Eventdate> eventdates;
 	
@@ -72,7 +77,6 @@ public class Event
 	{
 		return this.ID;
 	}
-	
 	
 	/**
 	 * Gets the name.

@@ -34,14 +34,13 @@ public class InvitesController
 		
 		Logger lg = Logger.getLogger("Debug");
 		
-		Participant pc = null;
-		
 		// loop trough all participants, find the user and set its participation state to true
+		if(event.getParticipants() == null) return false;
+		
 		for(Participant p: event.getParticipants())
 		{
 			if(p.getUser().getUsername().equals(user.getUsername()))
 			{
-				pc = p;
 				p.setStatus(true);
 				
 				break;
@@ -77,8 +76,8 @@ public class InvitesController
 	 * Declines the invite sent to an event by the organisator.
 	 * 
 	 * @param user The user who rejects the invite.
-	 * @param event 
-	 * @return
+	 * @param event The event to decline the invite for.
+	 * @return true on success, false on failure (event not found, database failure)
 	 */
 	public boolean declineInvite(User user, Event event)
 	{
@@ -92,14 +91,13 @@ public class InvitesController
 		
 		Logger lg = Logger.getLogger("Debug");
 		
-		Participant pc = null;
-		
 		// loop trough all participants, find the user and remove them.
+		if(event.getParticipants() == null) return false;
+		
 		for(Participant p: event.getParticipants())
 		{
 			if(p.getUser().getUsername().equals(user.getUsername()))
 			{
-				pc = p;
 				event.getParticipants().remove(p);
 				break;
 			}
@@ -146,27 +144,35 @@ public class InvitesController
 		if(session == null)
 			return null;
 		
-		// prepare query
-		Query query = session.getNamedQuery("getInvitesForUser")
-						.setString("user", u.getUsername());
-		
-		// first, get all ROWS
-		@SuppressWarnings("unchecked")
-		List<Event> results = (List<Event>)query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = results.iterator();
-		
+		session.beginTransaction();
 		List<Event> events = new ArrayList<Event>();
 		
-		// iterate over all of them
-		while(it.hasNext())
+		try
 		{
-			// then, get all columns for each row
-			Object[] col = (Object[])it.next();
-			if(col.length == 0) continue;
-			Event event = (Event)col[0];
+			// prepare query
+			Query query = session.getNamedQuery("getInvitesForUser")
+							.setString("username", u.getUsername());
 			
-			events.add(event);
+			// first, get all ROWS
+			@SuppressWarnings("unchecked")
+			List<Event> results = (List<Event>)query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = results.iterator();
+			
+			// iterate over all of them
+			while(it.hasNext())
+			{
+				// then, get all columns for each row
+				Object[] col = (Object[])it.next();
+				if(col.length == 0) continue;
+				Event event = (Event)col[0];
+				
+				events.add(event);
+			}
+		}
+		finally
+		{
+			session.getTransaction().commit();
 		}
 		
 		return events;

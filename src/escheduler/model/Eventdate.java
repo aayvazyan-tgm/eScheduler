@@ -11,7 +11,7 @@ import org.hibernate.annotations.Cascade;
  * A date proposal on an event, aka. a voting option.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 @Entity
 public class Eventdate 
@@ -32,6 +32,14 @@ public class Eventdate
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
 	private Event event;
+	
+	/**
+	 * Default constructor for Hibernate
+	 */
+	public Eventdate()
+	{
+		
+	}
 	
 	public Eventdate(Date start, Date end, Event event)
 	{

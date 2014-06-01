@@ -1,7 +1,5 @@
 package escheduler.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -16,7 +14,7 @@ import escheduler.view.IViewElement;
  * Only allows one instance.
  *
  * @author Ari Ayvazyan
- * @version 20140529.1
+ * @version 01.06.2014
  */
 public class SessionManager 
 {

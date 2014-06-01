@@ -13,7 +13,7 @@ import escheduler.model.*;
  * comments, event dates, votes, comments
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 public class EventsController 
 {
@@ -40,6 +40,8 @@ public class EventsController
 		
 		// here, a switch happens
 		// if the event allows  multiple votes per date, then delete all other dates
+		if(e.getEventdates() == null) return false;
+		
 		for(Eventdate date:e.getEventdates())
 		{
 			if(e.getType() != EType.DATE_MULTIUSER) break;
@@ -149,13 +151,11 @@ public class EventsController
 		// loop trough all participants and delete each one where the supplied user occurs
 		ArrayList<Participant> participants = new ArrayList<>(event.getParticipants());
 		
-		Participant pc = null;
 		for(Participant p:participants)
 		{
 			if(p.getUser().getUsername().equals(user.getUsername()))
 			{
 				if(p.isStatus()) return false;
-				pc = p;
 				event.getParticipants().remove(p);
 				break;
 			}
@@ -215,7 +215,7 @@ public class EventsController
 		// first, look if others have already voted for the supplied
 		// only check if the event is a one-vote-per-date
 		if(e.getType() == EType.DATE_SINGLEUSER)
-		{
+		{			
 			for(Participant participant:participants)
 			{
 				Eventdate date = participant.getEventdate();
@@ -286,6 +286,9 @@ public class EventsController
 		
 		// check if user is a part of the event
 		boolean isParticipant = false;
+		
+		if(event.getParticipants() == null) return false;
+		
 		for(Participant participant: event.getParticipants())
 		{
 			if(participant.getUser().getUsername().equals(user.getUsername()))
@@ -345,6 +348,8 @@ public class EventsController
 			return false;
 		
 		// loop trough all comments, look for the supplied one and delete it.
+		if(event.getComments() == null) return false;
+		
 		for(Comment c:event.getComments())
 		{
 			if(c.getID() == comment.getID())
@@ -395,6 +400,8 @@ public class EventsController
 		if(e == null) return false;
 		
 		// first check if none of the users have yet accepted their invites
+		if(e.getParticipants() == null) return false;
+		
 		for(Participant participant: e.getParticipants())
 		{
 			if(participant.isStatus())
@@ -504,11 +511,7 @@ public class EventsController
 			// iterate over all of them
 			while(it.hasNext())
 			{
-				// then, get all columns for each row
-				Object[] col = (Object[])it.next();
-				if(col.length == 0) continue;
-				
-				user = (User)col[0];
+				user = (User)it.next();
 			}
 		}
 		finally
@@ -540,7 +543,7 @@ public class EventsController
 		try
 		{
 			// prepare query
-			Query query = session.getNamedQuery("getEventComplete")
+			Query query = session.getNamedQuery("getEventsForUser")
 							.setString("user", u.getUsername());
 			
 			// first, get all ROWS
@@ -548,8 +551,6 @@ public class EventsController
 			List<Event> results = (List<Event>)query.list();
 			@SuppressWarnings("rawtypes")
 			Iterator it = results.iterator();
-			
-			
 			
 			// iterate over all of them
 			while(it.hasNext())
@@ -651,7 +652,7 @@ public class EventsController
 			List<Event> results = (List<Event>)query.list();
 			@SuppressWarnings("rawtypes")
 			Iterator it = results.iterator();
-			
+
 			// iterate over all of them
 			while(it.hasNext())
 			{

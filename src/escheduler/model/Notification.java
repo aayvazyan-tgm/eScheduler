@@ -5,13 +5,11 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.hibernate.annotations.Cascade;
-
 /**
  * Notifies the User about changes on Events he participates or owns/manages.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 @NamedQueries({
 	@NamedQuery(name = "getNotificationsForUser", query = "FROM Notification n INNER JOIN n.target ta INNER JOIN n.trigger tr WHERE ta.username = :user")
@@ -37,12 +35,10 @@ public class Notification
 	
 	/** the target */
 	@NotNull
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
 	private User target;
 	
 	/** The trigger. */
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
 	private Event trigger;
 	

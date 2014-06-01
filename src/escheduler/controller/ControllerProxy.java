@@ -37,15 +37,13 @@ public class ControllerProxy {
 	 * @param ev the EventsController
 	 * @param nc the NotificationsController
 	 */
-	public ControllerProxy(LoginController lg,RegisterController rg, 
-			NewEventController ne, InvitesController inv, EventsController ev, 
-			NotificationsController nc){
-		this.loginController=lg;
-		this.registerController=rg;
-		this.newEventController=ne;
-		this.invitesController=inv;
-		this.eventsController=ev;
-		this.notificationsController=nc;
+	public ControllerProxy(){
+		this.loginController=new LoginController();
+		this.registerController=new RegisterController();
+		this.newEventController=new NewEventController();
+		this.invitesController=new InvitesController();
+		this.eventsController=new EventsController();
+		this.notificationsController=new NotificationsController();
 	}
 	
 	/**

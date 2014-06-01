@@ -13,7 +13,7 @@ import escheduler.model.User;
  * This class handles user registrations in the System.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 public class RegisterController 
 {
@@ -41,8 +41,9 @@ public class RegisterController
 		Query query = session.getNamedQuery("checkExistance")
 				.setString("username", username);
 			
+		@SuppressWarnings("unchecked")
 		List<User> results = (List<User>)query.list();
-			
+		
 		if(results.size() > 0)
 				return false;
 		
@@ -58,6 +59,7 @@ public class RegisterController
 		}
 		catch(RuntimeException re)
 		{
+			re.printStackTrace();
 			try
 			{
 				tx.rollback();

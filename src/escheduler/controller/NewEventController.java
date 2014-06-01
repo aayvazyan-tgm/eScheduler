@@ -23,8 +23,7 @@ public class NewEventController
 	public boolean createEvent(Event event) 
 	{
 		Logger lg=Logger.getLogger("Debug");
-		if(event == null)
-			return false;
+		if(event == null)return false;
 		
 		Session session = SessionManager.getInstance().getHibernateSession();
 		
@@ -35,7 +34,6 @@ public class NewEventController
 		try
 		{
 			session.save(event);
-			
 			tx.commit();
 			
 			// notify all invited users about that new event

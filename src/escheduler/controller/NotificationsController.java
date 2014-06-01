@@ -11,7 +11,7 @@ import escheduler.model.*;
  * All Notifications are handled trough this class.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 public class NotificationsController
 {

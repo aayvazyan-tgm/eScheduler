@@ -5,15 +5,13 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.hibernate.annotations.Cascade;
-
 /**
  * This class represents a comment posted on an event, identified by:
  * 
  * date, author, event, text.
  *
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 @Entity
 public class Comment 
@@ -32,14 +30,20 @@ public class Comment
 	private String text;
 	
 	/** The author. */
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne(optional = false)
 	private User author;
 	
 	/** The event, which the comment was posted on. */
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne(optional = false)
 	private Event event;
+	
+	/**
+	 * Default Constructor for Hibernate
+	 */
+	public Comment()
+	{
+		
+	}
 	
 	/**
 	 * Instantiates a new comment.

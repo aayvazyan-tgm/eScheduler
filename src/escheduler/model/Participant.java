@@ -2,17 +2,12 @@ package escheduler.model;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cascade;
-
 /**
  * A Participant is a User who participates in an Event, got a State (invited/participating) and has either already voted or not (null).
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
-@NamedQueries({
-	@NamedQuery(name = "getInvitesForUser", query = "SELECT p.event FROM Participant p WHERE p.user = :user AND p.status = false")
-})
 @Entity
 public class Participant 
 {
@@ -26,18 +21,23 @@ public class Participant
 	
 	/** The user. */
 	@ManyToOne(optional = false)
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
 	
 	/** the eventdate the user has voted on. */
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne(optional = true)
 	private Eventdate eventdate;
 	
 	/** hibernate should fill this automatically. */
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Event event;
+	
+	/**
+	 * Default constructor for Hibernate
+	 */
+	public Participant()
+	{
+		
+	}
 	
 	public Participant(boolean status, User user, Event event)
 	{

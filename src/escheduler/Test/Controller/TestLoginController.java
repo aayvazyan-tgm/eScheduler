@@ -1,6 +1,5 @@
 package escheduler.Test.Controller;
 
-import static org.junit.Assert.assertTrue;
 import escheduler.controller.LoginController;
 import escheduler.controller.RegisterController;
 import junit.framework.TestCase;

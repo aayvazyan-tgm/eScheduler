@@ -7,12 +7,12 @@ import javax.validation.constraints.*;
  * Represents a single User in the System, who can login, participate in events, votes, etc.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 @NamedQueries({
 	@NamedQuery(name="checkLogin", query="FROM User u WHERE u.username = :username AND u.password = :password"),
 	@NamedQuery(name="checkExistance", query="FROM User u WHERE u.username = :username"),
-	@NamedQuery(name="searchUser", query="FROM User u WHERE u.username LIKE CONCAT('%', :q, '%')")
+	@NamedQuery(name="searchUser", query="FROM User u WHERE u.username = :q")
 })
 @Entity
 public class User
@@ -25,7 +25,9 @@ public class User
 	@NotNull
 	private String password;
 	
-	/** default constructor, required for Hibernate to work properly */
+	/**
+	 * Default constructor for Hibernate
+	 */
 	public User()
 	{
 	

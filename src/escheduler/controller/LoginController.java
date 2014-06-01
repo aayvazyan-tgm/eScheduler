@@ -11,7 +11,7 @@ import org.hibernate.*;
  * This class handles all login requests made by the User.
  * 
  * @author Andreas Willinger
- * @version 29.05.2014
+ * @version 01.06.2014
  */
 public class LoginController 
 {
@@ -22,6 +22,7 @@ public class LoginController
 	 * @param password The supplied password
 	 * @return true, if user is valid, false if not or no connection to database
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean login(String username, String password)
 	{
 		if(username == null || password == null)
@@ -40,7 +41,7 @@ public class LoginController
 			Query query = session.getNamedQuery("checkLogin")
 					.setString("username", username)
 					.setString("password", password);
-				
+			
 			results = (List<User>)query.list();
 		}
 		finally
