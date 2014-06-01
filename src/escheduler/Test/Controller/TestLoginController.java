@@ -1,6 +1,8 @@
 package escheduler.Test.Controller;
 
+import static org.junit.Assert.assertTrue;
 import escheduler.controller.LoginController;
+import escheduler.controller.RegisterController;
 import junit.framework.TestCase;
 
 /**
@@ -35,7 +37,8 @@ public class TestLoginController extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		// Add additional set up code here
+		RegisterController r1=new RegisterController();
+		assertTrue(r1.register("user", "pass"));
 	}
 
 	/**
@@ -47,20 +50,17 @@ public class TestLoginController extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		// Add additional tear down code here
 	}
 
 	/**
 	 * Run the boolean login(String, String) method test
 	 */
 	public void testLogin() {
-		fail("Newly generated method - fix or disable");
-		// add test code here
 		LoginController fixture = new LoginController();
-		String username = null;
-		String password = null;
+		String username = "user";
+		String password = "pass";
 		boolean result = fixture.login(username, password);
-		assertTrue(false);
+		assertTrue(result);
 	}
 }
 
