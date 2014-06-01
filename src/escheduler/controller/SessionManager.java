@@ -2,6 +2,8 @@ package escheduler.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +21,7 @@ import escheduler.view.IViewElement;
 public class SessionManager 
 {
 	/** The listeners, waiting for a change. */
-	private List<IViewElement> listeners = new ArrayList<>();
+	private Queue<IViewElement> listeners = new LinkedBlockingQueue<>();
 	
 	/** Hibernate's Session factory to get the current session */
 	private SessionFactory factory = new AnnotationConfiguration().configure().buildSessionFactory();
@@ -50,7 +52,8 @@ public class SessionManager
 	 *
 	 * @param An Element implementing the IViewElement interface.
 	 */
-	public void addListener(IViewElement view){
+	public void addListener(IViewElement view)
+	{
 		this.listeners.add(view);
 	}
 	
@@ -63,8 +66,7 @@ public class SessionManager
 	{
 		for(IViewElement ve:this.listeners)
 		{
-			if(ve == view)
-				this.listeners.remove(ve);
+			if(ve == view) this.listeners.remove(ve);
 		}
 	}
 	

@@ -19,7 +19,7 @@ import org.hibernate.annotations.Cascade;
 	@NamedQuery(name = "getEventParticipants", query = "FROM Event e INNER JOIN e.organisator o INNER JOIN e.participants p INNER JOIN p.user INNER JOIN p.eventdate WHERE e.ID = :ID"),
 	@NamedQuery(name = "getEventDates", query = "FROM Event e INNER JOIN e.eventdates WHERE e.ID = :ID"),
 	@NamedQuery(name = "getEventComments", query = "FROM Event e INNER JOIN e.comments c INNER JOIN c.author WHERE e.ID = :ID"),
-	@NamedQuery(name = "getEventsForUser", query = "FROM Event e INNER JOIN e.participants p WHERE e.User = :user OR p = :user")
+	@NamedQuery(name = "getEventsForUser", query = "FROM Event e INNER JOIN e.participants p WHERE e.organisator = :user OR p = :user")
 })
 @Entity
 public class Event 
@@ -41,6 +41,8 @@ public class Event
 	
 	/** The organisator. */
 	@NotNull
+	@ManyToOne(optional = false)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User organisator;
 	
 	/** type: may either be multi-vote (multiple users can vote on a date) or single-vote. */

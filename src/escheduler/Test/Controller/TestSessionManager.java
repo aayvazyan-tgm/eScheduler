@@ -23,7 +23,7 @@ public class TestSessionManager {
 	}
 
 	@Test
-	public void testListeners(){
+	public void testListenerFunctionality(){
 		SessionManager sm=SessionManager.getInstance();
 		TestIView ti=new TestIView();
 		TestIView ti2=new TestIView();
@@ -41,8 +41,7 @@ public class TestSessionManager {
 	@Test
 	public void testHibernateSession(){
 		Session s1=SessionManager.getInstance().getHibernateSession();
-		Session s2=SessionManager.getInstance().getHibernateSession();
-		assertEquals(s1, s2);
+		assertTrue(s1.isOpen());
 	}
 }
 	

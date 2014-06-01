@@ -11,17 +11,22 @@ import org.hibernate.annotations.Cascade;
  * @version 29.05.2014
  */
 @NamedQueries({
-	@NamedQuery(name = "getInvitesForUser", query = "SELECT Event e FROM Participant p WHERE p.User = :user AND p.status = false")
+	@NamedQuery(name = "getInvitesForUser", query = "SELECT p.event FROM Participant p WHERE p.user = :user AND p.status = false")
 })
 @Entity
 public class Participant 
 {
+	/**	The primary key */
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long ID;
+	
 	/** The invitation status (true = participating, false = pending). */
 	private boolean status;
 	
 	/** The user. */
-	@Id
 	@ManyToOne(optional = false)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
 	
 	/** the eventdate the user has voted on. */
@@ -30,9 +35,8 @@ public class Participant
 	private Eventdate eventdate;
 	
 	/** hibernate should fill this automatically. */
-	@Id
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Event event;
 	
 	public Participant(boolean status, User user, Event event)
@@ -40,6 +44,16 @@ public class Participant
 		this.status = status;
 		this.user = user;
 		this.event = event;
+	}
+	
+	/**
+	 * Gets the ID.
+	 * 
+	 * @return the ID
+	 */
+	public Long getID()
+	{
+		return this.ID;
 	}
 
 	/**

@@ -15,9 +15,6 @@ import org.hibernate.annotations.Cascade;
  * @author Andreas Willinger
  * @version 29.05.2014
  */
-@NamedQueries({
-	@NamedQuery(name = "getCommentDetails", query = "SELECT * FROM Comment c WHERE c = :comment")
-})
 @Entity
 public class Comment 
 {

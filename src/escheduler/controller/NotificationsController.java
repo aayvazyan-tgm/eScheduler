@@ -58,6 +58,9 @@ public class NotificationsController
 		}
 		else
 		{
+			if(notification.getTrigger() == null) return false;
+			if(notification.getTrigger().getParticipants() == null) return false;
+			
 			for(Participant participant: notification.getTrigger().getParticipants())
 			{
 				if(!participant.isStatus()) continue;
@@ -160,19 +163,28 @@ public class NotificationsController
 		Logger lg = Logger.getLogger("Debug");
 		List<Notification> notifications = new ArrayList<Notification>();
 		
-		Query query = session.getNamedQuery("getNotificationsForUser").setString("user", user.getUsername());
+		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<Notification> result = query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = result.iterator();
-		
-		while(it.hasNext())
+		try
 		{
-			Object[] cols = (Object[])it.next();
-			if(cols.length == 0) continue;
+			Query query = session.getNamedQuery("getNotificationsForUser").setString("user", user.getUsername());
 			
-			notifications.add((Notification)cols[0]);
+			@SuppressWarnings("unchecked")
+			List<Notification> result = query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = result.iterator();
+			
+			while(it.hasNext())
+			{
+				Object[] cols = (Object[])it.next();
+				if(cols.length == 0) continue;
+				
+				notifications.add((Notification)cols[0]);
+			}
+		}
+		finally
+		{
+			session.getTransaction().commit();
 		}
 		
 		return notifications;

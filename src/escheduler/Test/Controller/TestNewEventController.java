@@ -14,6 +14,7 @@ import escheduler.controller.NewEventController;
 import escheduler.model.EType;
 import escheduler.model.Event;
 import escheduler.model.Eventdate;
+import escheduler.model.Participant;
 import escheduler.model.User;
 
 /**
@@ -37,8 +38,8 @@ public class TestNewEventController {
 		e.setOrganisator(u1);
 		e.setVotingactive(true);
 		NewEventController ne=new NewEventController();
-		assertTrue(ne.createEvent(e));
 		
+		assertTrue(ne.createEvent(e));
 		assertFalse(ne.createEvent(null));
 	}
 

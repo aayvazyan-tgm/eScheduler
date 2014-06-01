@@ -35,6 +35,8 @@ public class RegisterController
 		if(session == null)
 			return false;
 		
+		Transaction tx = session.beginTransaction();
+		
 		// first, let's check if the user already exists
 		Query query = session.getNamedQuery("checkExistance")
 				.setString("username", username);
@@ -44,8 +46,7 @@ public class RegisterController
 		if(results.size() > 0)
 				return false;
 		
-		// then, create a new transaction and actually save the user
-		Transaction tx = session.beginTransaction();
+		// then, actually save the user
 		User user = new User(username, password);
 		
 		try

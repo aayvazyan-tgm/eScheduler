@@ -48,7 +48,6 @@ public class TestNotificationsController {
 		n.addNotitification(note);
 		n.markAsRead(note);
 		List<Notification> notes= n.getNotificationsForUser(u1);
-		
 		assertNotNull(notes);
 	}
 
@@ -56,7 +55,7 @@ public class TestNotificationsController {
 	 * Test method for {@link escheduler.controller.NotificationsController#getDetails(escheduler.model.Notification)}.
 	 */
 	@Test
-	public void testGetDetails() {
+	public void testGetDescription() {
 		NotificationsController n=new NotificationsController();
 		for(int i=0;i<NType.values().length;i++)
 		assertNotNull(n.getDescription(NType.values()[i]));

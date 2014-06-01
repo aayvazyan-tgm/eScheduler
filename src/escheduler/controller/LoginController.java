@@ -1,5 +1,6 @@
 package escheduler.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import escheduler.model.*;
@@ -31,11 +32,21 @@ public class LoginController
 		if(session == null)
 			return false;
 		
-		Query query = session.getNamedQuery("checkLogin")
-				.setString("username", username)
-				.setString("password", password);
-			
-		List<User> results = (List<User>)query.list();
+		session.beginTransaction();
+		List<User> results = new LinkedList<User>();
+		
+		try
+		{
+			Query query = session.getNamedQuery("checkLogin")
+					.setString("username", username)
+					.setString("password", password);
+				
+			results = (List<User>)query.list();
+		}
+		finally
+		{
+			session.getTransaction().commit();
+		}
 			
 		if(results.size() == 0)
 				return false;

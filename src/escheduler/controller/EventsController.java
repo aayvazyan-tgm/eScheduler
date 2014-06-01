@@ -487,27 +487,35 @@ public class EventsController
 		Session session = SessionManager.getInstance().getHibernateSession();
 		if(session == null) return null;
 		
-		Query query = session.getNamedQuery("searchUser")
-				.setString("q", search);
+		session.beginTransaction();
+		User user = null;
 		
-		// first, get all ROWS
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = users.iterator();
-		
-		// iterate over all of them
-		while(it.hasNext())
-		{
-			// then, get all columns for each row
-			Object[] col = (Object[])it.next();
-			if(col.length == 0) continue;
+		try
+		{		
+			Query query = session.getNamedQuery("searchUser")
+					.setString("q", search);
 			
-			User user = (User)col[0];
+			// first, get all ROWS
+			@SuppressWarnings("unchecked")
+			List<User> users = (List<User>)query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = users.iterator();
 			
-			return user;
+			// iterate over all of them
+			while(it.hasNext())
+			{
+				// then, get all columns for each row
+				Object[] col = (Object[])it.next();
+				if(col.length == 0) continue;
+				
+				user = (User)col[0];
+			}
 		}
-		return null;
+		finally
+		{
+			session.getTransaction().commit();
+		}
+		return user;
 	}
 	
 	/**
@@ -526,27 +534,37 @@ public class EventsController
 		if(session == null)
 			return null;
 		
-		// prepare query
-		Query query = session.getNamedQuery("getEventComplete")
-						.setString("user", u.getUsername());
-		
-		// first, get all ROWS
-		@SuppressWarnings("unchecked")
-		List<Event> results = (List<Event>)query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = results.iterator();
-		
+		session.beginTransaction();
 		List<Event> events = new ArrayList<Event>();
 		
-		// iterate over all of them
-		while(it.hasNext())
+		try
 		{
-			// then, get all columns for each row
-			Object[] col = (Object[])it.next();
-			if(col.length == 0) continue;
-			Event event = (Event)col[0];
+			// prepare query
+			Query query = session.getNamedQuery("getEventComplete")
+							.setString("user", u.getUsername());
 			
-			events.add(event);
+			// first, get all ROWS
+			@SuppressWarnings("unchecked")
+			List<Event> results = (List<Event>)query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = results.iterator();
+			
+			
+			
+			// iterate over all of them
+			while(it.hasNext())
+			{
+				// then, get all columns for each row
+				Object[] col = (Object[])it.next();
+				if(col.length == 0) continue;
+				Event event = (Event)col[0];
+				
+				events.add(event);
+			}
+		}
+		finally
+		{
+			session.getTransaction().commit();
 		}
 		
 		return events;
@@ -568,29 +586,37 @@ public class EventsController
 		if(session == null)
 			return null;
 		
-		// prepare query
-		Query query = session.getNamedQuery("getEventComplete")
-						.setLong("ID", ID);
+		session.beginTransaction();
+		Event event = null;
 		
-		// first, get all ROWS
-		@SuppressWarnings("unchecked")
-		List<Event> results = (List<Event>)query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = results.iterator();
-		
-		// iterate over all of them
-		while(it.hasNext())
+		try
 		{
-			// then, get all columns for each row
-			Object[] col = (Object[])it.next();
-			if(col.length == 0) continue;
+			// prepare query
+			Query query = session.getNamedQuery("getEventComplete")
+							.setLong("ID", ID);
 			
-			Event event = (Event)col[0];
+			// first, get all ROWS
+			@SuppressWarnings("unchecked")
+			List<Event> results = (List<Event>)query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = results.iterator();
 			
-			return event;
+			// iterate over all of them
+			while(it.hasNext())
+			{
+				// then, get all columns for each row
+				Object[] col = (Object[])it.next();
+				if(col.length == 0) continue;
+				
+				event = (Event)col[0];
+			}
+		}
+		finally
+		{
+			session.getTransaction().commit();
 		}
 		
-		return null;
+		return event;
 	}
 	
 	/**
@@ -611,28 +637,36 @@ public class EventsController
 		if(session == null)
 			return null;
 		
-		// prepare query
-		Query query = session.getNamedQuery(type)
-						.setLong("ID", e.getID());
+		session.beginTransaction();
+		Event event = null;
 		
-		// first, get all ROWS
-		@SuppressWarnings("unchecked")
-		List<Event> results = (List<Event>)query.list();
-		@SuppressWarnings("rawtypes")
-		Iterator it = results.iterator();
-		
-		// iterate over all of them
-		while(it.hasNext())
+		try
 		{
-			// then, get all columns for each row
-			Object[] col = (Object[])it.next();
-			if(col.length == 0) continue;
+			// prepare query
+			Query query = session.getNamedQuery(type)
+							.setLong("ID", e.getID());
 			
-			Event event = (Event)col[0];
+			// first, get all ROWS
+			@SuppressWarnings("unchecked")
+			List<Event> results = (List<Event>)query.list();
+			@SuppressWarnings("rawtypes")
+			Iterator it = results.iterator();
 			
-			return event;
+			// iterate over all of them
+			while(it.hasNext())
+			{
+				// then, get all columns for each row
+				Object[] col = (Object[])it.next();
+				if(col.length == 0) continue;
+				
+				event = (Event)col[0];
+			}
+		}
+		finally
+		{
+			session.getTransaction().commit();
 		}
 		
-		return null;
+		return event;
 	}
 }

@@ -21,9 +21,15 @@ public class User
 	@Id
 	private String username;
 	
-	/** the correspodenting password. */
+	/** the corresponding password. */
 	@NotNull
 	private String password;
+	
+	/** default constructor, required for Hibernate to work properly */
+	public User()
+	{
+	
+	}
 	
 	public User(String username, String password)
 	{
