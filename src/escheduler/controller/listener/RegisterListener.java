@@ -2,13 +2,23 @@ package escheduler.controller.listener;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
 
+import escheduler.model.User;
 import escheduler.view.MainView;
+import escheduler.view.composites.RegisterComposite;
+import escheduler.controller.RegisterController;
 
+/**
+ * Listener that handles button clicks from escheduler.view.composite.RegisterComposite 
+ * by using methods from escheduler.controller.RegisterController to add new users to the DB
+ * 
+ * @author Freudensprung Fabian
+ * @version Jun 1, 2014
+ */
 public class RegisterListener implements ClickListener {
 
 	private MainView mv;
+	private RegisterController rcont;
 	
 	public RegisterListener(MainView c) {
 		mv = c;
@@ -17,13 +27,29 @@ public class RegisterListener implements ClickListener {
 	@Override
 	public void buttonClick(ClickEvent event) {
 		String caption=event.getButton().getCaption();
+		//Checks if the Button pressed was on the LoggedOutComposite or on the RegisterComposite by checking the caption
 		if(caption=="Register") {
 			mv.openRegister();
 		}
 		else {
 			if(caption=="Submit Registration") {
-				//Check registration values
-				mv.register();
+				rcont = new RegisterController();
+				//Extracts the values from the form
+				RegisterComposite rcomp = (RegisterComposite)mv.getContent();
+				String pass1 = rcomp.getPass1().getValue();
+				String pass2 = rcomp.getPass2().getValue();
+				String user = rcomp.getUser().getValue();
+				//Checks if the user entered the same password
+				if(pass1.equals(pass2)) {
+					//Check if the registration succeeded
+					if(rcont.register(user, pass1))
+						mv.register(new User(user,pass1));
+					else
+						rcomp.setError("Failed to create the user!");
+				}
+				else {
+					rcomp.setError("The Passwords don't match!");
+				}
 			}	
 		}
 			

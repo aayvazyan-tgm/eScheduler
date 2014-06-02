@@ -10,7 +10,7 @@ import org.apache.log4j.*;
  * @version 30.05.2014
  */
 public class Start
-	implements ServletContextListener
+	//implements ServletContextListener
 {	
 	/**
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)

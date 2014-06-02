@@ -65,8 +65,17 @@ public class TestEventsController {
 	 * Test method for {@link escheduler.controller.EventsController#fixEvent(escheduler.model.Event, escheduler.model.Eventdate)}.
 	 */
 	@Test
-	public void testFixEvent() {
+	public void testFixEvent()
+	{
 		assertTrue(ec.fixEvent(event, eDate));
+		
+		Event e = new Event();
+		Eventdate ed = new Eventdate();
+		
+		assertFalse(ec.fixEvent(null, ed));
+		assertFalse(ec.fixEvent(e, null));
+		assertFalse(ec.fixEvent(null, null));
+		assertFalse(ec.fixEvent(e, ed));
 	}
 
 	/**
@@ -78,6 +87,14 @@ public class TestEventsController {
 		User u2l = ec.searchUser("anderson");
 		assertNotNull(u2l);
 		assertTrue(ec.addUser(u2l, event));
+		
+		Event e = new Event();
+		User u = new User();
+		
+		assertFalse(ec.addUser(null, e));
+		assertFalse(ec.addUser(u, null));
+		assertFalse(ec.addUser(null, null));
+		assertFalse(ec.addUser(u, e));
 	}
 
 	/**
@@ -90,6 +107,14 @@ public class TestEventsController {
 		assertNotNull(u2l);
 		assertTrue(ec.addUser(u2l, event));
 		assertTrue(ec.removeUser(u2l, event));
+		
+		Event e = new Event();
+		User u = new User();
+		
+		assertFalse(ec.removeUser(null, e));
+		assertFalse(ec.removeUser(u, null));
+		assertFalse(ec.removeUser(null,null));
+		assertFalse(ec.removeUser(u, e));
 	}
 
 	/**
@@ -102,6 +127,19 @@ public class TestEventsController {
 		assertNotNull(u2l);
 		assertTrue(ec.addUser(u2l, event));
 		assertTrue(ec.Vote(event, u2l, eDate));
+		
+		Event e = new Event();
+		Eventdate ed = new Eventdate();
+		User u = new User();
+		
+		assertFalse(ec.Vote(null, null, ed));
+		assertFalse(ec.Vote(null, u, null));
+		assertFalse(ec.Vote(e, null, null));
+		assertFalse(ec.Vote(e, null, ed));
+		assertFalse(ec.Vote(e, u, null));
+		assertFalse(ec.Vote(null, u, ed));
+		assertFalse(ec.Vote(null, null, null));
+		assertFalse(ec.Vote(e, u, ed));
 	}
 
 	/**
@@ -115,6 +153,21 @@ public class TestEventsController {
 		assertTrue(ec.addUser(u2l, event));
 		assertTrue(ec.addComment("myComment", u1, event)); //Administrator comments to a comment
 		assertTrue(ec.addComment("NormalUserComment", u2l, event));
+		
+		User u = new User();
+		Event e = new Event();
+		
+		assertFalse(ec.addComment(null, null, e));
+		assertFalse(ec.addComment(null, u, null));
+		assertFalse(ec.addComment("stuff", null, null));
+		assertFalse(ec.addComment("stuff", null, e));
+		assertFalse(ec.addComment("stuff", u, null));
+		assertFalse(ec.addComment(null, u, e));
+		assertFalse(ec.addComment(null, null, null));
+		assertFalse(ec.addComment("", null, null));
+		assertFalse(ec.addComment("", u, null));
+		assertFalse(ec.addComment("", null, e));
+		assertFalse(ec.addComment("stuff", u, e));
 	}
 
 	/**
@@ -136,6 +189,19 @@ public class TestEventsController {
 				break;
 			}
 		}
+		
+		Comment c = new Comment();
+		User u = new User();
+		Event e = new Event();
+		
+		assertFalse(ec.deleteComment(null, null, e));
+		assertFalse(ec.deleteComment(null, u, null));
+		assertFalse(ec.deleteComment(c, null, null));
+		assertFalse(ec.deleteComment(c, null, e));
+		assertFalse(ec.deleteComment(c, u, null));
+		assertFalse(ec.deleteComment(null, u, e));
+		assertFalse(ec.deleteComment(null, null, null));
+		assertFalse(ec.deleteComment(c, u, e));
 	}
 
 	/**
@@ -145,6 +211,7 @@ public class TestEventsController {
 	public void testUpdateEvent() {
 		event.setDescription("new Description");
 		assertTrue(ec.updateEvent(event));
+		assertFalse(ec.updateEvent(null));
 	}
 
 	/**
@@ -153,6 +220,8 @@ public class TestEventsController {
 	@Test
 	public void testDeleteEvent() {
 		assertTrue(ec.deleteEvent(event));
+		
+		assertFalse(ec.deleteEvent(null));
 	}
 
 	/**
@@ -161,6 +230,9 @@ public class TestEventsController {
 	@Test
 	public void testSearchUser() {
 		assertNotNull(ec.searchUser("neo"));
+		
+		assertNull(ec.searchUser(null));
+		assertNull(ec.searchUser(""));
 	}
 
 	/**
@@ -173,13 +245,18 @@ public class TestEventsController {
 		assertNotNull(u2l);
 		assertTrue(ec.addUser(u2l, event));
 		assertNotNull(ec.getEventsForUser(u2l));
+		
+		assertNull(ec.getEventsForUser(null));
 	}
 
 	/**
 	 * Test method for {@link escheduler.controller.EventsController#getEventById(java.lang.Long)}.
 	 */
 	@Test
-	public void testGetEventById() {
+	public void testGetEventById()
+	{
 		assertEquals(ec.getEventById(event.getID()).getName(), event.getName());
+		assertNull(ec.getEventById(null));
+		assertNull(ec.getEventById(-1L));
 	}
 }

@@ -26,7 +26,7 @@ public class EventsController
 	 */
 	public boolean fixEvent(Event e, Eventdate d) 
 	{
-		if(e == null)
+		if(e == null || d == null)
 			return false;
 		
 		Logger lg = Logger.getLogger("Debug");
@@ -65,7 +65,7 @@ public class EventsController
 			tx.commit();
 			
 			NotificationsController nc = new NotificationsController();
-			nc.addNotitification(nc.createNotification(NType.DATE_FIXED, null, e));
+			nc.addNotification(nc.createNotification(NType.DATE_FIXED, null, e));
 			
 			return true;
 		}
@@ -419,7 +419,7 @@ public class EventsController
 			tx.commit();
 			
 			NotificationsController nc = new NotificationsController();
-			nc.addNotitification(nc.createNotification(NType.EVENT_EDIT, null, e));
+			nc.addNotification(nc.createNotification(NType.EVENT_EDIT, null, e));
 			
 			return true;
 		}
@@ -462,7 +462,7 @@ public class EventsController
 			tx.commit();
 			
 			NotificationsController nc = new NotificationsController();
-			nc.addNotitification(nc.createNotification(NType.EVENT_DELETED, null, e));
+			nc.addNotification(nc.createNotification(NType.EVENT_DELETED, null, e));
 			
 			return true;
 		}
@@ -630,7 +630,7 @@ public class EventsController
 	 */
 	private Event getUpdatedEvent(Event e, String type)
 	{
-		if(type == null || type.equals(""))
+		if(e == null || e.getID() == null || type == null || type.equals(""))
 			return null;
 		
 		Session session = SessionManager.getInstance().getHibernateSession();

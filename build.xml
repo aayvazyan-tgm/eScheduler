@@ -84,7 +84,7 @@
 		<mkdir dir="${class.dir}" />
 		
 		<!-- Required for Hibernate to work properly -->
-		<copy file="${src.dir}/hibernate.cfg.xml" tofile="${class.dir}/hibernate.cfg.xml"/>
+		<copy file="${src.dir}/hibernate_production.cfg.xml" tofile="${class.dir}/hibernate.cfg.xml"/>
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false"/>
 		<javac srcdir="${test.dir}" destdir="${class.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false"/>
 	</target>

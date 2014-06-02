@@ -36,8 +36,6 @@ public class TestLoginController extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		RegisterController r1=new RegisterController();
-		assertTrue(r1.register("user", "pass"));
 	}
 
 	/**
@@ -55,11 +53,27 @@ public class TestLoginController extends TestCase {
 	 * Run the boolean login(String, String) method test
 	 */
 	public void testLogin() {
+		RegisterController r1=new RegisterController();
+		assertTrue(r1.register("user", "pass"));
+		
 		LoginController fixture = new LoginController();
 		String username = "user";
 		String password = "pass";
 		boolean result = fixture.login(username, password);
 		assertTrue(result);
+	}
+	
+	/**
+	 * Run the boolean login(String, String) method test
+	 */
+	public void testLoginFailure()
+	{
+		LoginController fixture = new LoginController();
+		assertFalse(fixture.login("not", "valid"));
+		
+		assertFalse(fixture.login(null, "valid"));
+		assertFalse(fixture.login(null, null));
+		assertFalse(fixture.login("valid", null));
 	}
 }
 

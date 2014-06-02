@@ -39,7 +39,7 @@ public class NewEventController
 			// notify all invited users about that new event
 			// only do that after the event was successfully saved
 			NotificationsController nc = new NotificationsController();
-			nc.addNotitification(nc.createNotification(NType.EVENT_NEW, null, event));
+			nc.addNotification(nc.createNotification(NType.EVENT_NEW, null, event));
 			
 			return true;
 		}

@@ -204,7 +204,7 @@ public class InvitesController
 		{
 			// and create a new notification if they did
 			NotificationsController nc = new NotificationsController();
-			nc.addNotitification(nc.createNotification(NType.ALL_INVITES_ACCEPTED, trigger.getOrganisator(), trigger));
+			nc.addNotification(nc.createNotification(NType.ALL_INVITES_ACCEPTED, trigger.getOrganisator(), trigger));
 		}
 	}
 }

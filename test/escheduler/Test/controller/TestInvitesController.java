@@ -25,21 +25,21 @@ public class TestInvitesController {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		EventsController evC=new EventsController();
-		RegisterController rc=new RegisterController();
+		EventsController evC = new EventsController();
+		RegisterController rc = new RegisterController();
 		if(evC.searchUser("neo") == null) assertTrue(rc.register("neo", "xxx"));
 		this.admin = evC.searchUser("neo");
 		assertNotNull(this.admin);
 		
-		ArrayList<Eventdate> al=new ArrayList<Eventdate>();
-		this.e= new Event();
+		ArrayList<Eventdate> al = new ArrayList<Eventdate>();
+		this.e = new Event();
 		al.add(new Eventdate(new Date(),new Date(), e));
 		e.setEventdates(al);
 		e.setName("testname");
 		e.setType(EType.DATE_SINGLEUSER);
 		e.setOrganisator(this.admin);
 		e.setVotingactive(true);
-		NewEventController ne=new NewEventController();
+		NewEventController ne = new NewEventController();
 		assertTrue(ne.createEvent(e));
 		
 		rc.register("andersonX","nosredna.rm");
@@ -73,6 +73,15 @@ public class TestInvitesController {
 	public void testAcceptInvite() {
 		InvitesController i1 =new InvitesController();
 		assertTrue(i1.acceptInvite(invitedUser, e));
+		
+		Event e = new Event();
+		User u = new User();
+		assertFalse(i1.acceptInvite(null, e));
+		assertFalse(i1.acceptInvite(u, null));
+		assertFalse(i1.acceptInvite(null, null));
+		
+		e.setParticipants(null);
+		assertFalse(i1.acceptInvite(u, e));
 	}
 
 	/**
@@ -82,6 +91,15 @@ public class TestInvitesController {
 	public void testDeclineInvite() {
 		InvitesController i1 =new InvitesController();
 		assertTrue(i1.declineInvite(invitedUser, e));
+		
+		Event e = new Event();
+		User u = new User();
+		assertFalse(i1.declineInvite(null, e));
+		assertFalse(i1.declineInvite(u, null));
+		assertFalse(i1.declineInvite(null, null));
+		
+		e.setParticipants(null);
+		assertFalse(i1.declineInvite(u, e));
 	}
 
 	/**
@@ -91,6 +109,7 @@ public class TestInvitesController {
 	public void testGetInvites() {
 		InvitesController i1 =new InvitesController();
 		assertEquals(i1.getInvites(invitedUser).get(0).getID(),e.getID());
+		
+		assertNull(i1.getInvites(null));
 	}
-
 }

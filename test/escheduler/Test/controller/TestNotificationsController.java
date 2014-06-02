@@ -45,10 +45,25 @@ public class TestNotificationsController {
 		
 		assertNotNull(note);
 		
-		n.addNotitification(note);
+		n.addNotification(note);
 		n.markAsRead(note);
 		List<Notification> notes= n.getNotificationsForUser(u1);
 		assertNotNull(notes);
+		
+		assertFalse(n.addNotification(null));
+		
+		Notification n1 = new Notification();
+		n1.setType(NType.ALL_INVITES_ACCEPTED);
+		n1.setTarget(null);
+		
+		assertFalse(n.addNotification(n1));
+		
+		n1.setType(NType.DATE_FIXED);
+		n1.setTrigger(null);
+		
+		assertFalse(n.addNotification(n1));
+		
+		assertFalse(n.markAsRead(null));
 	}
 
 	/**
@@ -56,9 +71,10 @@ public class TestNotificationsController {
 	 */
 	@Test
 	public void testGetDescription() {
-		NotificationsController n=new NotificationsController();
-		for(int i=0;i<NType.values().length;i++)
+		NotificationsController n = new NotificationsController();
+		for(int i = 0;i < NType.values().length; i++)
 		assertNotNull(n.getDescription(NType.values()[i]));
+		
+		assertNull(n.getNotificationsForUser(null));
 	}
-
 }

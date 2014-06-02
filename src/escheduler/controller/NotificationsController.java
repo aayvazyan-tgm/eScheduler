@@ -34,7 +34,7 @@ public class NotificationsController
 	 * @param notification The new notification to post.
 	 * @return true on success, false on database failure
 	 */
-	public boolean addNotitification(Notification notification)
+	public boolean addNotification(Notification notification)
 	{
 		if(notification == null)
 			return false;
