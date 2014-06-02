@@ -114,7 +114,7 @@
 			<formatter type="xml" />
 				
 			<batchtest fork="yes" todir="${report.dir}">
-				<fileset dir="${src.dir}">
+				<fileset dir="${test.dir}">
 					<include name="**/*Test*.java" />
 				</fileset>
 			</batchtest>
