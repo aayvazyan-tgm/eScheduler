@@ -1,8 +1,4 @@
-/**
- * 
- */
-package escheduler.Test.Controller;
-
+package escheduler.Test.controller;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -12,15 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import escheduler.controller.EventsController;
-import escheduler.controller.InvitesController;
-import escheduler.controller.NewEventController;
-import escheduler.controller.RegisterController;
-import escheduler.model.EType;
-import escheduler.model.Event;
-import escheduler.model.Eventdate;
-import escheduler.model.User;
-
+import escheduler.controller.*;
+import escheduler.model.*;
 /**
  * @author Ari
  * @version 01.06.2014
@@ -36,7 +25,12 @@ public class TestInvitesController {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.admin=new User("neo", "xxx");
+		EventsController evC=new EventsController();
+		RegisterController rc=new RegisterController();
+		if(evC.searchUser("neo") == null) assertTrue(rc.register("neo", "xxx"));
+		this.admin = evC.searchUser("neo");
+		assertNotNull(this.admin);
+		
 		ArrayList<Eventdate> al=new ArrayList<Eventdate>();
 		this.e= new Event();
 		al.add(new Eventdate(new Date(),new Date(), e));
@@ -47,10 +41,10 @@ public class TestInvitesController {
 		e.setVotingactive(true);
 		NewEventController ne=new NewEventController();
 		assertTrue(ne.createEvent(e));
-		RegisterController rc=new RegisterController();
+		
 		rc.register("andersonX","nosredna.rm");
 		rc.register("andersonY","nosredna.rm");
-		EventsController evC=new EventsController();
+		
 		this.invitedUser = evC.searchUser("andersonX");
 		this.invitedUser2 = evC.searchUser("andersonY");
 		

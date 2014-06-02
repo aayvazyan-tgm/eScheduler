@@ -1,7 +1,7 @@
+package escheduler.Test.controller;
 /**
  * 
  */
-package escheduler.Test.Controller;
 
 import static org.junit.Assert.*;
 
@@ -11,13 +11,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import escheduler.controller.NotificationsController;
-import escheduler.model.EType;
-import escheduler.model.Event;
-import escheduler.model.Eventdate;
-import escheduler.model.NType;
-import escheduler.model.Notification;
-import escheduler.model.User;
+import escheduler.controller.*;
+import escheduler.model.*;
 
 /**
  * @author Ari Ayvazyan
@@ -31,8 +26,13 @@ public class TestNotificationsController {
 	 */
 	@Test
 	public void testNotitifications() {
+		EventsController evC=new EventsController();
+		RegisterController rc=new RegisterController();
+		if(evC.searchUser("asd") == null) assertTrue(rc.register("asd", "pasd"));
+		User u1 = evC.searchUser("asd");
+		assertNotNull(u1);
+		
 		NotificationsController n=new NotificationsController();
-		User u1=new User("asd", "pasd");
 		ArrayList<Eventdate> al=new ArrayList<Eventdate>();
 		Event e= new Event();
 		al.add(new Eventdate(new Date(),new Date(), e));

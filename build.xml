@@ -6,8 +6,9 @@
 	<!-- The name of our deployed *.war file -->
 	<property name="war.file_name" value="${project.name}.war"/>
 	
-	<!-- Sources, Libraries -->
+	<!-- Sources, Tests, Libraries -->
 	<property name="src.dir" value="src" />
+	<property name="test.dir" value="test" />
 	<property name="lib.dir" value="lib" />
 	
 	<!-- Our build directories-->
@@ -107,7 +108,7 @@
 
 	<target name="test" depends="compile">
 		<mkdir dir="${report.dir}" />
-		<junit printsummary="yes" haltonfailure="no">
+		<junit printsummary="yes" haltonfailure="no" showoutput="no">
 			<classpath refid="project.classpath" />
 			<!-- Formatted output -->
 			<formatter type="xml" />
@@ -118,6 +119,19 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		
+		<junitreport todir="${report.dir}">
+			<fileset dir="${report.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report todir="${report.dir}" />
+		</junitreport>
+		
+		<delete>
+			<fileset dir="${report.dir}">
+				<include name="*.xml" />
+			</fileset>
+		</delete>
 	</target>
 	
 	<target name="clean" depends="">

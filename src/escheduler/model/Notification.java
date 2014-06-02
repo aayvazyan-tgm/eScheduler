@@ -45,6 +45,14 @@ public class Notification
 	/** users who have read this notification **/
 	private boolean read;
 	
+	/**
+	 * Default constructor for Hibernate
+	 */
+	public Notification()
+	{
+		
+	}
+	
 	public Notification(NType type, Date date, String description, User target, Event trigger)
 	{
 		this.type = type;

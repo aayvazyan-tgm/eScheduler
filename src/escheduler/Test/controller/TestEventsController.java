@@ -1,7 +1,4 @@
-/**
- * 
- */
-package escheduler.Test.Controller;
+package escheduler.Test.controller;
 
 import static org.junit.Assert.*;
 
@@ -12,15 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import escheduler.controller.EventsController;
-import escheduler.controller.NewEventController;
-import escheduler.controller.RegisterController;
-import escheduler.model.Comment;
-import escheduler.model.EType;
-import escheduler.model.Event;
-import escheduler.model.Eventdate;
-import escheduler.model.User;
-
+import escheduler.controller.*;
+import escheduler.model.*;
 /**
  * @author Ari Ayvazyan
  * @version 01.06.2014

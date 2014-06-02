@@ -1,4 +1,4 @@
-package escheduler.Test.Controller;
+package escheduler.Test.controller;
 
 import escheduler.controller.LoginController;
 import escheduler.controller.RegisterController;
@@ -75,7 +75,7 @@ public class TestLoginController extends TestCase {
  * createTestFixture = false
  * createTestStubs = true
  * methods = login(QString;!QString;)
- * package = escheduler.Test.Controller
+ * package = escheduler.Test.controller
  * package.sourceFolder = eScheduler/src
  * superclassType = junit.framework.TestCase
  * testCase = TestLoginController

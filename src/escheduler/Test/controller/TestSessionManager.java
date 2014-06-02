@@ -1,4 +1,4 @@
-package escheduler.Test.Controller;
+package escheduler.Test.controller;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import escheduler.controller.SessionManager;
 import escheduler.view.IViewElement;
+
 
 /**
  * Tests the Session Manager

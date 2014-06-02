@@ -1,7 +1,7 @@
+package escheduler.Test.controller;
 /**
  * 
  */
-package escheduler.Test.Controller;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

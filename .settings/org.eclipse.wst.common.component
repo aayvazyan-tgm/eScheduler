@@ -2,7 +2,6 @@
     <wb-module deploy-name="eScheduler">
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/" source-path="/web"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src-test"/>
         <property name="context-root" value="eScheduler"/>
         <property name="java-output-path" value="/eScheduler/build/classes"/>
     </wb-module>
