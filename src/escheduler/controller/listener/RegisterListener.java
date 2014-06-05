@@ -15,15 +15,24 @@ import escheduler.controller.RegisterController;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
+@SuppressWarnings("serial")
 public class RegisterListener implements ClickListener {
 
 	private MainView mv;
 	private RegisterController rcont;
 	
+	/**
+	 * Constructor of RegisterListener
+	 * 
+	 * @param c MainView containing the Composites
+	 */
 	public RegisterListener(MainView c) {
 		mv = c;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
+	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
 		String caption=event.getButton().getCaption();
@@ -39,17 +48,25 @@ public class RegisterListener implements ClickListener {
 				String pass1 = rcomp.getPass1().getValue();
 				String pass2 = rcomp.getPass2().getValue();
 				String user = rcomp.getUser().getValue();
-				//Checks if the user entered the same password
-				if(pass1.equals(pass2)) {
-					//Check if the registration succeeded
-					if(rcont.register(user, pass1))
-						mv.register(new User(user,pass1));
-					else
-						rcomp.setError("Failed to create the user!");
+				//Checks if a password has been entered
+				if(pass1==null || pass1=="" || pass2==null || pass2=="") {
+					rcomp.setError("Please enter a password");
 				}
 				else {
-					rcomp.setError("The Passwords don't match!");
+					//Checks if the user entered the same password
+					if(pass1.equals(pass2)) {
+						//Check if the registration succeeded
+						if(rcont.register(user, pass1))
+							mv.register(new User(user,pass1));
+						else
+							rcomp.setError("Failed to create the user!");
+					}
+					else {
+						rcomp.setError("The Passwords don't match!");
+					}
 				}
+				
+				
 			}	
 		}
 			

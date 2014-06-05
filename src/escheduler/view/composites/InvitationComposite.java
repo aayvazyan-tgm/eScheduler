@@ -1,12 +1,23 @@
 package escheduler.view.composites;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 
+import escheduler.controller.InvitesController;
 import escheduler.controller.listener.InvitationListener;
+import escheduler.model.Event;
+import escheduler.model.Eventdate;
+import escheduler.model.Participant;
 import escheduler.view.MainView;
 
 /**
@@ -15,6 +26,7 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
+@SuppressWarnings("serial")
 public class InvitationComposite extends CustomComponent {
 
 	int iid=0;
@@ -22,6 +34,8 @@ public class InvitationComposite extends CustomComponent {
 	private AbsoluteLayout mainLayout;
 
 	private Table inviteTable;
+	
+	private InvitesController ic;
 
 	private Label heading;
 	private MainView mv;
@@ -33,6 +47,7 @@ public class InvitationComposite extends CustomComponent {
 	 * visual editor.
 	 */
 	public InvitationComposite(MainView mv) {
+		ic = new InvitesController();
 		this.mv=mv;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
@@ -40,6 +55,11 @@ public class InvitationComposite extends CustomComponent {
 		// TODO add user code here
 	}
 
+	/**
+	 * Builds the main layout.
+	 *
+	 * @return the absolute layout
+	 */
 	private AbsoluteLayout buildMainLayout() {
 		// common part: create layout
 		mainLayout = new AbsoluteLayout();
@@ -74,9 +94,7 @@ public class InvitationComposite extends CustomComponent {
 		inviteTable.addContainerProperty("Accept", Button.class, null);
 		inviteTable.addContainerProperty("Decline", Button.class, null);
 		
-		//Add Test Data-Sets
-		this.addInvitation("TestEvent","blablabla","Hans Bauer",93,"12-12-12");
-		this.addInvitation("TestEvent#2","blablabla","Hugo Bauer",12,"13-12-13");
+		loadInvitations();
 		
 		mainLayout.addComponent(inviteTable,
 				"top:40.0px;right:26.0px;left:0.0px;");
@@ -84,35 +102,108 @@ public class InvitationComposite extends CustomComponent {
 		return mainLayout;
 	}
 	
+	/**
+	 * Gets the iid.
+	 *
+	 * @return the iid
+	 */
 	public int getIid() {
 		return iid;
 	}
 
+	/**
+	 * Sets the iid.
+	 *
+	 * @param id the new iid
+	 */
 	public void setIid(int id) {
 		this.iid = id;
 	}
 
+	/**
+	 * Gets the invite table.
+	 *
+	 * @return the invite table
+	 */
 	public Table getInviteTable() {
 		return inviteTable;
 	}
 
+	/**
+	 * Sets the invite table.
+	 *
+	 * @param inviteTable the new invite table
+	 */
 	public void setInviteTable(Table inviteTable) {
 		this.inviteTable = inviteTable;
 	}
 
-	public void addInvitation(String event, String description, String organiser, Integer participating, String date) {
+	/**
+	 * Adds the invitation.
+	 *
+	 * @param event the event
+	 * @param description the description
+	 * @param organiser the organiser
+	 * @param participating the participating
+	 * @param date the date
+	 * @param id the id
+	 */
+	public void addInvitation(String event, String description, String organiser, Integer participating, String date, Long id) {
 		Button a=new Button("A");
-		a.addClickListener(new InvitationListener(mv,iid));
+		a.addClickListener(new InvitationListener(mv,id));
 		Button d=new Button("D");
-		d.addClickListener(new InvitationListener(mv,iid));
-		inviteTable.addItem(new Object[] {event,description,organiser,participating,date,a,d},new Integer(iid));
-		iid++;
-		
-		
+		d.addClickListener(new InvitationListener(mv,id));
+		inviteTable.addItem(new Object[] {event,description,organiser,participating,date,a,d},id);
 	}
 
-	public void removeInvitation(int id2) {
-		inviteTable.removeItem(id2);
+	public void loadInvitations() {
+		List<escheduler.model.Event> events = ic.getInvites(mv.getUser());
+		System.out.println("");
+		System.out.println(""+events.size());
+		System.out.println("");
+		Iterator<escheduler.model.Event> it = events.iterator();
+		while(it.hasNext()) {
+			escheduler.model.Event e = it.next();
+			String name = e.getName();
+			String description = e.getDescription();
+			String organiser = e.getOrganisator().getUsername();
+			
+			//Counts the Users that have accepted the Invitation
+			Integer accepted = 0;
+			Collection<Participant> p = e.getParticipants();
+			Iterator<Participant> itP = p.iterator();
+			while(itP.hasNext()) {
+				if(itP.next().isStatus()) {
+					accepted++;
+				}
+			}
+			
+			//Checks if the Date has bin set yet
+			String dateText;
+			if(e.getEventdates().size()==1) {
+				Iterator<Eventdate> itDate = e.getEventdates().iterator();
+				Eventdate ed = itDate.next();
+				Date start = ed.getStart();
+				Date end = ed.getEnd();
+				dateText = ""+new SimpleDateFormat("dd/MM/yyyy").format(start)+" to "+new SimpleDateFormat("dd/MM/yyyy").format(end);
+			}
+			else {
+				dateText = "Date not yet set";
+			}
+			
+			Long id = e.getID();
+			
+			addInvitation(name,description,organiser,accepted,dateText,id);
+		}
+	}
+	
+	/**
+	 * Removes the invitation.
+	 *
+	 * @param id the id
+	 */
+	public void removeInvitation(Long id) {
+		inviteTable.removeItem(id);
 	}
 
 }

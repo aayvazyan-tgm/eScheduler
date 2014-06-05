@@ -14,6 +14,7 @@ import escheduler.view.MainView;
  * @version Jun 1, 2014
  *
  */
+@SuppressWarnings("serial")
 public class EventComposite extends CustomComponent {
 
 	private HorizontalSplitPanel splitPanel;
@@ -36,6 +37,11 @@ public class EventComposite extends CustomComponent {
 	}
 
 	
+	/**
+	 * Builds the layout.
+	 *
+	 * @return the horizontal split panel
+	 */
 	private HorizontalSplitPanel buildLayout() {		
 		// top-level component properties
 		setWidth("100.0%");
@@ -48,7 +54,7 @@ public class EventComposite extends CustomComponent {
 		splitPanel.setHeight("100%");
 		
 		eventList = new EventListComposite(mv);
-		eventDetail = new EventDetailComposite();
+		eventDetail = new EventDetailComposite(mv);
 		
 		splitPanel.addComponent(eventList);
 		splitPanel.addComponent(eventDetail);
@@ -57,21 +63,41 @@ public class EventComposite extends CustomComponent {
 	}
 
 
+	/**
+	 * Gets the event list.
+	 *
+	 * @return the event list
+	 */
 	public EventListComposite getEventList() {
 		return eventList;
 	}
 
 
+	/**
+	 * Sets the event list.
+	 *
+	 * @param eventList the new event list
+	 */
 	public void setEventList(EventListComposite eventList) {
 		this.eventList = eventList;
 	}
 
 
+	/**
+	 * Gets the event detail.
+	 *
+	 * @return the event detail
+	 */
 	public EventDetailComposite getEventDetail() {
 		return eventDetail;
 	}
 
 
+	/**
+	 * Sets the event detail.
+	 *
+	 * @param eventDetail the new event detail
+	 */
 	public void setEventDetail(EventDetailComposite eventDetail) {
 		this.eventDetail = eventDetail;
 	}

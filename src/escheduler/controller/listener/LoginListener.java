@@ -2,7 +2,6 @@ package escheduler.controller.listener;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
 
 import escheduler.controller.LoginController;
 import escheduler.model.User;
@@ -16,15 +15,25 @@ import escheduler.view.composites.LoginComposite;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
+@SuppressWarnings("serial")
 public class LoginListener implements ClickListener {
 
 	private MainView mv;
 	private LoginController lcont;
 	
+	/**
+	 * Constructor of LoginListener
+	 * 
+	 * @param c MainView containing the Composites
+	 */
 	public LoginListener(MainView c) {
 		mv = c;
+		lcont = new LoginController();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
+	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
 		String caption=event.getButton().getCaption();
@@ -34,11 +43,12 @@ public class LoginListener implements ClickListener {
 		}
 		else {
 			if(caption=="Submit Login") {
-				lcont = new LoginController();
+				
 				//Extracts the values from the form
-				LoginComposite lcomp = (LoginComposite)mv.getContent();
+				LoginComposite lcomp = (LoginComposite) mv.getContent();
 				String pass = lcomp.getPassword().getValue();
 				String user = lcomp.getUser().getValue();
+				
 				//Checks if username and password match
 				if(lcont.login(user, pass)) {
 					mv.login(new User(user,pass));

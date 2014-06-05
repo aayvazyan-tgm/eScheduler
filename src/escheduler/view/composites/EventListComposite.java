@@ -1,18 +1,25 @@
 package escheduler.view.composites;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
 
 import escheduler.controller.EventsController;
-import escheduler.view.MainView;
+import escheduler.controller.listener.EventSelectListener;
+import escheduler.controller.listener.NewEventListener;
 import escheduler.model.Event;
+import escheduler.model.Eventdate;
+import escheduler.model.Participant;
+import escheduler.view.MainView;
 
 /**
  * Custom Vaadin Component that displays a list of all events a user is either organising
@@ -21,6 +28,7 @@ import escheduler.model.Event;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
+@SuppressWarnings("serial")
 public class EventListComposite extends CustomComponent {
 	
 	private AbsoluteLayout mainLayout;
@@ -29,6 +37,7 @@ public class EventListComposite extends CustomComponent {
 	private Table myEvents;
 	private Panel myPanel;
 	private Panel paPanel;
+	private Button newEvent;
 	private MainView mv;
 	private EventsController ec;
 	/**
@@ -46,6 +55,11 @@ public class EventListComposite extends CustomComponent {
 	}
 
 	
+	/**
+	 * Builds the main layout.
+	 *
+	 * @return the absolute layout
+	 */
 	private AbsoluteLayout buildMainLayout() {
 		// common part: create layout
 		mainLayout = new AbsoluteLayout();
@@ -59,46 +73,110 @@ public class EventListComposite extends CustomComponent {
 		
 		// eventTabSheet
 		eventTabSheet = buildeventTabSheet();
-		List<escheduler.model.Event> list = ec.getEventsForUser(mv.getUser());
-		//Adds the Events to the List
-		for(int i=0; i<list.size(); i++){
-			escheduler.model.Event e = list.get(i);
-			String dateText;
-			//Checks if the Date has bin set yet
-			if(e.getEventdates().size()==1) {
-				dateText = ((Date) e.getEventdates().toArray()[0]).toString();
-			}
-			else {
-				dateText = "Date not yet set";
-			}
-			//Checks if the user is the Organiser
-			if(e.getOrganisator().getUsername().equals(mv.getUser().getUsername())) {
-				this.addMyEvent(e.getName(), dateText, e.getParticipants().size(), e.getComments().size(), e.getID());
-			}
-			else {
-				this.addParticipatingEvent(e.getName(), e.getOrganisator().getUsername(), dateText, e.getParticipants().size(), e.getComments().size(), e.getID());
-			}	
-		}
+		loadEvents();
 		mainLayout.addComponent(eventTabSheet, "top:0.0px;left:0.0px;");
+		
+		newEvent = new Button();
+		newEvent.setCaption("New Event");
+		newEvent.setImmediate(false);
+		newEvent.setWidth("-1px");
+		newEvent.setHeight("-1px");
+		newEvent.addClickListener(new NewEventListener(mv));
+		mainLayout.addComponent(newEvent, "top:45%;right:15px;");
 		
 		return mainLayout;
 	}
 
 	
+	/**
+	 * Load events.
+	 */
+	public void loadEvents() {
+		myEvents.removeAllItems();
+		paEvents.removeAllItems();
+		
+		List<escheduler.model.Event> list = ec.getEventsForUser(mv.getUser());
+		Iterator<escheduler.model.Event> it = list.iterator();
+		//Adds the Events to the List
+		while(it.hasNext()){
+			escheduler.model.Event e = it.next();
+			
+			boolean accepted = false;
+			boolean isOrganiser = false;
+			
+			if(e.getOrganisator().getUsername().equals(mv.getUser().getUsername())) {
+				isOrganiser = true;
+			}
+			
+			if(!isOrganiser) {
+				Iterator<Participant> itPa = e.getParticipants().iterator();
+				while(itPa.hasNext()) {
+					Participant pa = itPa.next();
+					if(pa.getUser().getUsername().equals(mv.getUser().getUsername())) {
+						accepted = pa.isStatus();
+					}
+				}
+			}
+			
+			
+			if(accepted || isOrganiser) {
+				String dateText;
+				
+				//Checks if the Date has bin set yet
+				if(e.getEventdates().size()==1) {
+					Iterator<Eventdate> itDate = e.getEventdates().iterator();
+					Eventdate ed = itDate.next();
+					Date start = ed.getStart();
+					Date end = ed.getEnd();
+					dateText = ""+new SimpleDateFormat("dd/MM/yyyy").format(start)+" bis "+new SimpleDateFormat("dd/MM/yyyy").format(end);
+				}
+				else {
+					dateText = "Date not yet set";
+				}
+				
+				Integer userCount = 0;
+				Collection<Participant> p = e.getParticipants();
+				Iterator<Participant> itP = p.iterator();
+				while(itP.hasNext()) {
+					if(itP.next().isStatus()) {
+						userCount++;
+					}
+				}
+				
+				//Checks if the user is the Organiser
+				if(e.getOrganisator().getUsername().equals(mv.getUser().getUsername())) {
+					this.addMyEvent(e.getName(), dateText, userCount, e.getComments().size(), e.getID());
+				}
+				else {
+					this.addParticipatingEvent(e.getName(), e.getOrganisator().getUsername(), dateText, userCount, e.getComments().size(), e.getID());
+				}	
+			}	
+		}		
+	}
+
+
+	/**
+	 * Buildevent tab sheet.
+	 *
+	 * @return the tab sheet
+	 */
 	private TabSheet buildeventTabSheet() {
 		// common part: create layout
 		eventTabSheet = new TabSheet();
 		eventTabSheet.setImmediate(true);
 		eventTabSheet.setWidth("100%");
+		//eventTabSheet.setHeight("50%");
 		
 		// myEvents
 		myEvents = new Table();
 		myEvents.setImmediate(false);
 		myEvents.setSizeFull();
+		myEvents.setSelectable(true);
 		myEvents.addContainerProperty("Name", String.class, null);
 		myEvents.addContainerProperty("Date", String.class, null);
 		myEvents.addContainerProperty("Participating", Integer.class, null);
 		myEvents.addContainerProperty("Comments", Integer.class, null);
+		myEvents.addItemClickListener(new EventSelectListener(mv));
 		myPanel = new Panel();
 		myPanel.setSizeFull();
 		myPanel.setContent(myEvents);
@@ -109,11 +187,13 @@ public class EventListComposite extends CustomComponent {
 		paEvents = new Table();
 		paEvents.setImmediate(false);
 		paEvents.setSizeFull();
+		paEvents.setSelectable(true);
 		paEvents.addContainerProperty("Name", String.class, null);
 		paEvents.addContainerProperty("Organiser", String.class, null);
 		paEvents.addContainerProperty("Date", String.class, null);
 		paEvents.addContainerProperty("Participating", Integer.class, null);
 		paEvents.addContainerProperty("Comments", Integer.class, null);
+		paEvents.addItemClickListener(new EventSelectListener(mv));
 		paPanel = new Panel();
 		paPanel.setSizeFull();
 		paPanel.setContent(paEvents);
@@ -122,20 +202,40 @@ public class EventListComposite extends CustomComponent {
 		return eventTabSheet;
 	}
 	
+	/**
+	 * Gets the pa events.
+	 *
+	 * @return the pa events
+	 */
 	public Table getPaEvents() {
 		return paEvents;
 	}
 
 
+	/**
+	 * Sets the pa events.
+	 *
+	 * @param paEvents the new pa events
+	 */
 	public void setPaEvents(Table paEvents) {
 		this.paEvents = paEvents;
 	}
 
+	/**
+	 * Gets the my events.
+	 *
+	 * @return the my events
+	 */
 	public Table getMyEvents() {
 		return myEvents;
 	}
 
 
+	/**
+	 * Sets the my events.
+	 *
+	 * @param myEvents the new my events
+	 */
 	public void setMyEvents(Table myEvents) {
 		this.myEvents = myEvents;
 	}
