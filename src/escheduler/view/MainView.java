@@ -109,6 +109,8 @@ public class MainView extends UI implements IViewElement{
 	public void newEvent() {
 		setContent(new NewEventComposite(this));
 	}
+	
+	
 
 	/**
 	 * Checks if is logged in.
@@ -148,5 +150,13 @@ public class MainView extends UI implements IViewElement{
 	 */
 	public void viewEvents() {
 		this.setContent(new LoggedInComposite(this));
+	}
+
+
+	/**
+	 * Log out.
+	 */
+	public void logOut() {
+		setContent(new LoggedOutComposite(this));
 	}
 }

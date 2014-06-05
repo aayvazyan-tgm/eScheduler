@@ -1,8 +1,10 @@
 package escheduler.view.composites;
 
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 
+import escheduler.controller.listener.LogoutListener;
 import escheduler.view.MainView;
 
 /**
@@ -13,7 +15,8 @@ import escheduler.view.MainView;
  * @version Jun 1, 2014
  */
 public class LoggedInComposite extends CustomComponent {
-
+	
+	private Panel logout;
 	private TabSheet mainLayout;	
 	private EventComposite events;
 	private NotificationComposite notifications;
@@ -44,13 +47,23 @@ public class LoggedInComposite extends CustomComponent {
 		mainLayout.setHeight("100%");
 		
 		events = new EventComposite(mv);
+		events.setId("events");
 		mainLayout.addTab(events, "Events", null);
 		
 		notifications = new NotificationComposite(mv);
+		notifications.loadNotifications();
+		notifications.setId("notifications");
 		mainLayout.addTab(notifications, "Notifications", null);
 		
 		invitations = new InvitationComposite(mv);
+		invitations.setId("invitations");
 		mainLayout.addTab(invitations, "Invitations", null);
+		
+		logout = new Panel();
+		logout.setId("logout");
+		mainLayout.addTab(logout, "Logout");
+		
+		mainLayout.addSelectedTabChangeListener(new LogoutListener(mv));
 		
 		// top-level component properties
 		setWidth("100.0%");

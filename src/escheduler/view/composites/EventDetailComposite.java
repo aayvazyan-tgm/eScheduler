@@ -176,6 +176,7 @@ public class EventDetailComposite extends CustomComponent {
 		deleteEvent.setCaption("Delete Event");
 		deleteEvent.setWidth("-1px");
 		deleteEvent.setHeight("-1px");
+		deleteEvent.setVisible(false);
 		deleteEvent.addClickListener(new EventDeleteListener(mv));
 		topLayout.addComponent(deleteEvent,"top:0.0px;right:0.0px;");
 		
@@ -246,6 +247,7 @@ public class EventDetailComposite extends CustomComponent {
 		dateButton.setHeight("-1px");
 		dateButton.setWidth("-1px");
 		dateButton.addClickListener(new VoteListener(mv));
+		dateButton.setVisible(false);
 		dateLayout.addComponent(dateButton, "top:85.0%;right:6.0px");
 		
 		detailTabs.addTab(datePanel, "Date", null);
@@ -274,6 +276,7 @@ public class EventDetailComposite extends CustomComponent {
 		removeUser.setImmediate(false);
 		removeUser.setWidth("-1px");
 		removeUser.setHeight("-1px");
+		removeUser.setVisible(false);
 		removeUser.addClickListener(new RemoveUserListener(mv));
 		participantLayout.addComponent(removeUser, "top:85%;right:6.0px;");
 		
@@ -318,7 +321,7 @@ public class EventDetailComposite extends CustomComponent {
 		//commentField
 		commentField = new TextField();
 		commentField.setImmediate(false);
-		commentField.setWidth("60%");
+		commentField.setWidth("450px");
 		commentField.setHeight("-1px");
 		commentLayout.addComponent(commentField, "bottom:0.0px;left:0.0px;");
 		
@@ -326,7 +329,8 @@ public class EventDetailComposite extends CustomComponent {
 		addComment = new Button();
 		addComment.setCaption("Add Comment");
 		addComment.setHeight("-1px");
-		addComment.setWidth("-1px");
+		addComment.setWidth("120px");
+		addComment.setVisible(false);
 		addComment.addClickListener(new AddCommentListener(mv));
 		commentLayout.addComponent(addComment, "bottom:0.0px;right:0.0px;");
 		return commentPanel;
@@ -492,6 +496,11 @@ public class EventDetailComposite extends CustomComponent {
 	 * @return true, if successful
 	 */
 	public boolean loadDetail(escheduler.model.Event e) {
+		dateButton.setVisible(true);
+		removeUser.setVisible(true);
+		deleteEvent.setVisible(true);
+		addComment.setVisible(true);
+		
 		if(e.getOrganisator().getUsername().equals(mv.getUser().getUsername())) {
 			dateButton.setCaption("Pick Date");
 		}
@@ -585,8 +594,9 @@ public class EventDetailComposite extends CustomComponent {
 	public void vote() {
 		if(dateVote.getValue()!=null) {
 			ec.Vote(e, mv.getUser(), (Eventdate)dateVote.getValue());
-			Notification.show("You Voted");
-			dateButton.setEnabled(false);			
+			Notification.show("You Voted");	
+			loadDetail(e);
+			((LoggedInComposite)mv.getContent()).getEvents().getEventList().loadEvents();
 		}
 		else {
 			dateButton.setComponentError(new UserError("You have to select a Date"));
@@ -611,6 +621,8 @@ public class EventDetailComposite extends CustomComponent {
 				ec.fixEvent(e, (Eventdate)dateVote.getValue());
 				Notification.show("You picked the date");
 				dateButton.setEnabled(false);
+				loadDetail(e);
+				((LoggedInComposite)mv.getContent()).getEvents().getEventList().loadEvents();
 			}
 			else {
 				dateButton.setComponentError(new UserError("Some Users haven't voted yet"));

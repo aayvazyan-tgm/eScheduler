@@ -3,12 +3,16 @@
  */
 package escheduler.view.composites;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 
+import escheduler.controller.NotificationsController;
 import escheduler.controller.listener.NotificationReadListener;
 import escheduler.model.Notification;
 import escheduler.view.MainView;
@@ -27,12 +31,15 @@ public class NotificationComposite extends CustomComponent {
 	 
 	private Table notificationTable;
 	 
+	private NotificationsController nc;
+	
 	private Label heading;
 	private MainView mv;
 	/**
 	 * Constructor of NotificationComposite
 	 */
 	public NotificationComposite(MainView mv) {
+		nc = new NotificationsController();
 		this.mv=mv;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
@@ -90,6 +97,15 @@ public class NotificationComposite extends CustomComponent {
 	}
 
 
+	public void loadNotifications() {
+		List<Notification> list = nc.getNotificationsForUser(mv.getUser());
+		Iterator<Notification> it = list.iterator();
+		while(it.hasNext()) {
+			addNotification(it.next());
+		}
+	}
+	
+	
 	/**
 	 * Removes the notification.
 	 *
