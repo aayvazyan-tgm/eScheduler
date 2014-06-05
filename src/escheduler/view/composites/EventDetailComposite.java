@@ -310,7 +310,7 @@ public class EventDetailComposite extends CustomComponent {
 		commentTable = new Table();
 		commentTable.setImmediate(false);
 		commentTable.setWidth("100%");
-		commentTable.setHeight("75%");
+		commentTable.setHeight("300px");
 		commentTable.addContainerProperty("Date", String.class, null);
 		commentTable.addContainerProperty("Author", String.class, null);
 		commentTable.addContainerProperty("Comment", String.class, null);
@@ -692,9 +692,7 @@ public class EventDetailComposite extends CustomComponent {
 	 */
 	public void addComment() {
 		String c = commentField.getValue();
-		if(ec.addComment(c, mv.getUser(), e)) {
-			System.out.println("Added Comment");
-		}
+		ec.addComment(c, mv.getUser(), e);
 		loadComments();
 	}
 
@@ -703,16 +701,15 @@ public class EventDetailComposite extends CustomComponent {
 	 * Load comments.
 	 */
 	private void loadComments() {
+		e = ec.getEventById(e.getID());
 		Collection<Comment> col = e.getComments();
-		System.out.println(col.size());
-		System.out.println("++++++++++++");
 		Iterator<Comment> it = col.iterator();
 		while(it.hasNext()) {
 			Comment c = it.next();
 			Button b = new Button();
 			b.setCaption("X");
 			b.addClickListener(new RemoveCommentListener(mv,c.getID()));
-			commentTable.addItem(new Object[] {new SimpleDateFormat("dd/MM/yyy").format(c.getDate()), c.getAuthor(), c.getText(), b},c.getID());
+			commentTable.addItem(new Object[] {new SimpleDateFormat("dd/MM/yyy").format(c.getDate()), c.getAuthor().getUsername(), c.getText(), b},c.getID());
 		}
 		
 	}
