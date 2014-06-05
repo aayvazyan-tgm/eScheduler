@@ -6,10 +6,11 @@
 	<!-- The name of our deployed *.war file -->
 	<property name="war.file_name" value="${project.name}.war"/>
 	
-	<!-- Sources, Tests, Libraries -->
+	<!-- Sources, Tests, Libraries, Javadoc -->
 	<property name="src.dir" value="src" />
 	<property name="test.dir" value="test" />
 	<property name="lib.dir" value="lib" />
+	<property name="doc.dir" value="javadoc" />
 	
 	<!-- Our build directories-->
 	<property name="build.dir" value="build" />
@@ -52,11 +53,13 @@
 			password="${tomcat.manager.password}" path="/${project.name}" />
 	</target>
 	
+	<!-- Start/stop the Application on the Server -->
 	<target name="stop" description="stop application in tomcat">
 		<stop url="${tomcat.manager.url}" username="${tomcat.manager.username}"
 			password="${tomcat.manager.password}" path="/${project.name}" />
 	</target>
 	
+	<!-- Deploy/Undeploy the Application -->
 	<target name="deploy" description="deploy from tomcat">
 		<echo>deploying to tomcat server</echo>
 		<deploy
@@ -85,6 +88,9 @@
 		
 		<!-- Required for Hibernate to work properly -->
 		<copy file="${src.dir}/hibernate_production.cfg.xml" tofile="${class.dir}/hibernate.cfg.xml"/>
+		<!-- Log4j -->
+		<copy file="${src.dir}/log4j.xml" tofile="${class.dir}/log4j.xml" />
+		
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false"/>
 		<javac srcdir="${test.dir}" destdir="${class.dir}" classpathref="project.classpath" debug="true" deprecation="true" includeantruntime="false"/>
 	</target>
@@ -106,7 +112,8 @@
 			</manifest>
 		</war>
 	</target>
-
+	
+	<!-- Run automated JUNit Tests and convert the results into HTML -->
 	<target name="test" depends="compile">
 		<mkdir dir="${report.dir}" />
 		<junit printsummary="yes" haltonfailure="no" showoutput="no">
@@ -135,11 +142,21 @@
 		</delete>
 	</target>
 	
+	<!-- Javadoc -->
+	<target name="doc">
+		<mkdir dir="${doc.dir}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" classpathref="project.classpath" />
+	</target>
+		
 	<target name="clean" depends="">
 		<delete dir="${class.dir}" />
 		<delete dir="${report.dir}" />
 		<delete dir="${war.dir}" />
 		<delete dir="${build.dir} "/>
+	</target>
+	
+	<target name="clean-doc" depends="">
+		<delete dir="${doc.dir}" />
 	</target>
 	
 	<target name="build-and-deploy" depends="war, deploy" />
