@@ -285,14 +285,18 @@ public class EventsController
 		if(session == null) return false;
 		
 		// check if user is a part of the event
-		boolean isParticipant = false;
-		
 		if(event.getParticipants() == null) return false;
 		
-		for(Participant participant: event.getParticipants())
+		boolean isParticipant = false;
+		if(event.getOrganisator().getUsername().equals(user.getUsername())) isParticipant = true;
+		
+		if(!isParticipant)
 		{
-			if(participant.getUser().getUsername().equals(user.getUsername()))
-				isParticipant = true;
+			for(Participant participant: event.getParticipants())
+			{
+				if(participant.getUser().getUsername().equals(user.getUsername()))
+					isParticipant = true;
+			}
 		}
 		if(!isParticipant) return false;
 		
