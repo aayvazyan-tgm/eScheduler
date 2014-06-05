@@ -13,6 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
@@ -528,6 +529,16 @@ public class EventDetailComposite extends CustomComponent {
 			Date start = ed.getStart();
 			Date end = ed.getEnd();
 			String dateText = ""+new SimpleDateFormat("dd/MM/yyyy").format(start)+" to "+new SimpleDateFormat("dd/MM/yyyy").format(end);
+			int count = 0;
+			Collection<Participant> part = ed.getEvent().getParticipants();
+			Iterator<Participant> itPa = part.iterator();
+			while(itPa.hasNext()) {
+				Eventdate date = itPa.next().getEventdate();
+				if(date!=null && date.getID()==ed.getID()) {
+					count++;
+				}
+			}
+			dateText += " ("+count+")";
 			dateVote.addItem(ed);
 			dateVote.setItemCaption(ed, dateText);
 		}
@@ -574,6 +585,8 @@ public class EventDetailComposite extends CustomComponent {
 	public void vote() {
 		if(dateVote.getValue()!=null) {
 			ec.Vote(e, mv.getUser(), (Eventdate)dateVote.getValue());
+			Notification.show("You Voted");
+			dateButton.setEnabled(false);			
 		}
 		else {
 			dateButton.setComponentError(new UserError("You have to select a Date"));
@@ -596,6 +609,8 @@ public class EventDetailComposite extends CustomComponent {
 			}
 			if(allVoted) {
 				ec.fixEvent(e, (Eventdate)dateVote.getValue());
+				Notification.show("You picked the date");
+				dateButton.setEnabled(false);
 			}
 			else {
 				dateButton.setComponentError(new UserError("Some Users haven't voted yet"));
