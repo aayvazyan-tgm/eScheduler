@@ -12,7 +12,6 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class LoggedInComposite extends CustomComponent {
 
 	private TabSheet mainLayout;	
@@ -30,8 +29,6 @@ public class LoggedInComposite extends CustomComponent {
 		this.mv=mv;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
-
-		// TODO add user code here
 	}
 
 	/**

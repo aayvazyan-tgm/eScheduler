@@ -12,7 +12,6 @@ import com.vaadin.ui.VerticalLayout;
 import escheduler.controller.SessionManager;
 import escheduler.model.Notification;
 import escheduler.model.User;
-import escheduler.view.composites.EventComposite;
 import escheduler.view.composites.LoggedInComposite;
 import escheduler.view.composites.LoggedOutComposite;
 import escheduler.view.composites.LoginComposite;
@@ -31,7 +30,6 @@ import escheduler.view.composites.RegisterComposite;
  * @version Jun 5, 2014
  *
  */
-@SuppressWarnings("serial")
 @Theme("escheduler")
 public class MainView extends UI implements IViewElement{
 	

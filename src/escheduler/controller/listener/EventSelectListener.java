@@ -6,7 +6,6 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import escheduler.controller.EventsController;
 import escheduler.model.Event;
 import escheduler.view.MainView;
-import escheduler.view.composites.EventComposite;
 import escheduler.view.composites.EventDetailComposite;
 import escheduler.view.composites.LoggedInComposite;
 
@@ -18,7 +17,6 @@ import escheduler.view.composites.LoggedInComposite;
  * @version Jun 5, 2014
  *
  */
-@SuppressWarnings("serial")
 public class EventSelectListener implements ItemClickListener{
 
 	private MainView mv;

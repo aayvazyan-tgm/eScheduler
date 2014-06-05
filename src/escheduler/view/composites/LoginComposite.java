@@ -18,7 +18,6 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class LoginComposite extends CustomComponent {
 
 	private AbsoluteLayout mainLayout;
@@ -37,8 +36,6 @@ public class LoginComposite extends CustomComponent {
 		this.mv=mv;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
-
-		// TODO add user code here
 	}
 
 	 

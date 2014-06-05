@@ -14,7 +14,6 @@ import escheduler.view.composites.LoggedInComposite;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class NotificationReadListener implements ClickListener {
 
 	private MainView mv;

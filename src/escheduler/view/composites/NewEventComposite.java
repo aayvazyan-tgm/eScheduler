@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.vaadin.data.Item;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -24,18 +23,15 @@ import escheduler.controller.listener.AddUserListener;
 import escheduler.controller.listener.FormRemoveListener;
 import escheduler.controller.listener.NewEventListener;
 import escheduler.model.EType;
-import escheduler.model.Eventdate;
 import escheduler.model.User;
 import escheduler.view.MainView;
 
-// TODO: Auto-generated Javadoc
 /**
  * Custom Vaadin Component that displays a form that is used to create a new events.
  *
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class NewEventComposite extends CustomComponent {
 
 	/** The main layout. */
@@ -153,6 +149,7 @@ public class NewEventComposite extends CustomComponent {
 		
 		// datePicker1
 		datePicker1 = new PopupDateField();
+		datePicker1.setCaption("Startdate");
 		datePicker1.setImmediate(false);
 		datePicker1.setWidth("-1px");
 		datePicker1.setHeight("-1px");
@@ -160,6 +157,7 @@ public class NewEventComposite extends CustomComponent {
 		
 		//datePicker2
 		datePicker2 = new PopupDateField();
+		datePicker2.setCaption("Enddate");
 		datePicker2.setImmediate(false);
 		datePicker2.setWidth("-1px");
 		datePicker2.setHeight("-1px");
@@ -448,7 +446,7 @@ public class NewEventComposite extends CustomComponent {
 			userList.addItem(userID);
 			userList.setItemCaption(userID, user.getUsername());
 			userID++;
-			userPicker.setValue(null);
+			userPicker.setValue("");
 			return true;
 		}		
 	}

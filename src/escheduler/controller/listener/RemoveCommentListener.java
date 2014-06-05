@@ -12,16 +12,21 @@ import escheduler.view.composites.EventDetailComposite;
 import escheduler.view.composites.LoggedInComposite;
 
 /**
- * @author ffreu_000
+ * @author Freudensprung Fabian
  * @version Jun 5, 2014
  *
  */
-@SuppressWarnings("serial")
 public class RemoveCommentListener implements ClickListener {
 
 	private MainView mv;
 	private Long id;
 	
+	/**
+	 * Instantiates a new removes the comment listener.
+	 *
+	 * @param mv the mv
+	 * @param id the id
+	 */
 	public RemoveCommentListener(MainView mv, Long id) {
 		this.mv = mv;
 		this.id = id;

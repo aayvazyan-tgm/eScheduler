@@ -17,7 +17,6 @@ import escheduler.view.composites.NewEventComposite;
  * @version Jun 4, 2014
  *
  */
-@SuppressWarnings("serial")
 public class AddDateListener implements ClickListener {
 
 	MainView mv;

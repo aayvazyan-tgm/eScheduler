@@ -22,18 +22,22 @@ import escheduler.view.MainView;
 import escheduler.view.composites.NewEventComposite;
 
 /**
- * Handles Button CLicks for creating a new event
+ * Handles Button Clicks for creating a new event
  * 
- * @author ffreu_000
+ * @author Freudensprung Fabian
  * @version Jun 3, 2014
  */
-@SuppressWarnings("serial")
 public class NewEventListener implements ClickListener{
 
 	private MainView mv;
 	private NewEventController nec;
 	private EventsController ec;
 
+	/**
+	 * Instantiates a new new event listener.
+	 *
+	 * @param mv the mv
+	 */
 	public NewEventListener(MainView mv) {
 		nec = new NewEventController();
 		ec = new EventsController();

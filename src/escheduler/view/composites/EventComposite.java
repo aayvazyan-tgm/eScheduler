@@ -14,7 +14,6 @@ import escheduler.view.MainView;
  * @version Jun 1, 2014
  *
  */
-@SuppressWarnings("serial")
 public class EventComposite extends CustomComponent {
 
 	private HorizontalSplitPanel splitPanel;
@@ -33,7 +32,6 @@ public class EventComposite extends CustomComponent {
 		buildLayout();
 		setCompositionRoot(splitPanel);
 
-		// TODO add user code here
 	}
 
 	

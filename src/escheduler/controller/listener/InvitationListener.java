@@ -15,7 +15,6 @@ import escheduler.view.composites.LoggedInComposite;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class InvitationListener implements ClickListener {
 
 	private MainView mv;

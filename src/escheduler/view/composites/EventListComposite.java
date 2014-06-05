@@ -16,7 +16,6 @@ import com.vaadin.ui.Table;
 import escheduler.controller.EventsController;
 import escheduler.controller.listener.EventSelectListener;
 import escheduler.controller.listener.NewEventListener;
-import escheduler.model.Event;
 import escheduler.model.Eventdate;
 import escheduler.model.Participant;
 import escheduler.view.MainView;
@@ -28,7 +27,6 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class EventListComposite extends CustomComponent {
 	
 	private AbsoluteLayout mainLayout;

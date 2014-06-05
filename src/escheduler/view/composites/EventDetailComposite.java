@@ -40,7 +40,7 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
+
 public class EventDetailComposite extends CustomComponent {
 	private EventsController ec;
 	private VerticalLayout mainLayout;

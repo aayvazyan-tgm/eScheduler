@@ -24,7 +24,6 @@ import escheduler.view.MainView;
  * @author Freudensprung Fabian
  * @version Jun 1, 2014
  */
-@SuppressWarnings("serial")
 public class InvitationComposite extends CustomComponent {
 
 	int iid=0;

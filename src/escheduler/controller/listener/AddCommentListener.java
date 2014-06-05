@@ -10,15 +10,19 @@ import escheduler.view.MainView;
 import escheduler.view.composites.LoggedInComposite;
 
 /**
- * @author ffreu_000
+ * @author Freudensprung Fabian
  * @version Jun 5, 2014
  *
  */
-@SuppressWarnings("serial")
 public class AddCommentListener implements ClickListener {
 
 	private MainView mv;
 	
+	/**
+	 * Instantiates a new adds the comment listener.
+	 *
+	 * @param mv the mv
+	 */
 	public AddCommentListener(MainView mv) {
 		this.mv = mv;
 	}
