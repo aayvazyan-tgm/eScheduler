@@ -1,3 +1,4 @@
+
 package escheduler.model;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  * 
  * A unique ID, name, description, organisator, type, participants and eventdates
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 @NamedQueries({
 	@NamedQuery(name = "getEventComplete", query = "FROM Event e LEFT JOIN e.participants p LEFT JOIN e.comments c LEFT JOIN e.eventdates d INNER JOIN e.organisator o WHERE e.ID = :ID"),
@@ -67,6 +68,29 @@ public class Event
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private Collection<Eventdate> eventdates;
+	
+	/**
+	 * Default constructor for Hibernate
+	 */
+	public Event()
+	{
+		
+	}
+	
+	/**
+	 * Instantiates a new Event
+	 * 
+	 * @param name the name
+	 * @param organisator the organisator
+	 * @param type the type
+	 */
+	public Event(String name, User organisator, EType type)
+	{
+		this.name = name;
+		this.votingactive = true;
+		this.organisator = organisator;
+		this.type = type;
+	}
 	
 	/**
 	 * Gets the id.

@@ -29,13 +29,6 @@ public class ControllerProxy {
 	
 	/**
 	 * Instantiates a new controller proxy.
-	 *
-	 * @param lg the LoginController
-	 * @param rg the RegisterController
-	 * @param ne the NewEventController
-	 * @param inv the InvitesController
-	 * @param ev the EventsController
-	 * @param nc the NotificationsController
 	 */
 	public ControllerProxy(){
 		this.loginController=new LoginController();

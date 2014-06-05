@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
  * Notifies the User about changes on Events he participates or owns/manages.
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 @NamedQueries({
 	@NamedQuery(name = "getNotificationsForUser", query = "FROM Notification n INNER JOIN n.target ta INNER JOIN n.trigger tr WHERE ta.username = :user")
@@ -53,6 +53,15 @@ public class Notification
 		
 	}
 	
+	/**
+	 * Instantiates a new Notification
+	 * 
+	 * @param type the type
+	 * @param date the date
+	 * @param description the description
+	 * @param target the target
+	 * @param trigger the trigger
+	 */
 	public Notification(NType type, Date date, String description, User target, Event trigger)
 	{
 		this.type = type;
@@ -182,7 +191,7 @@ public class Notification
 	/**
 	 * Sets the read status of this notification.
 	 * 
-	 * @param the new read status.
+	 * @param read the new read status.
 	 */
 	public void setRead(boolean read)
 	{

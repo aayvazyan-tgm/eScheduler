@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
  * Represents a single User in the System, who can login, participate in events, votes, etc.
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 @NamedQueries({
 	@NamedQuery(name="checkLogin", query="FROM User u WHERE u.username = :username AND u.password = :password"),
@@ -33,6 +33,12 @@ public class User
 	
 	}
 	
+	/**
+	 * Instantiates a new User
+	 * 
+	 * @param username the username
+	 * @param password the password
+	 */
 	public User(String username, String password)
 	{
 		this.username = username;

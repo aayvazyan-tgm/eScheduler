@@ -28,9 +28,13 @@ public class TestNotificationsController {
 	public void testNotitifications() {
 		EventsController evC=new EventsController();
 		RegisterController rc=new RegisterController();
-		if(evC.searchUser("asd") == null) assertTrue(rc.register("asd", "pasd"));
-		User u1 = evC.searchUser("asd");
+		if(evC.searchUser("user1") == null) assertTrue(rc.register("user1", "pasta1"));
+		if(evC.searchUser("user2") == null) assertTrue(rc.register("user2", "pasta2"));
+		User u1 = evC.searchUser("user1");
 		assertNotNull(u1);
+		
+		User u2 = evC.searchUser("user2");
+		assertNotNull(u2);
 		
 		NotificationsController n=new NotificationsController();
 		ArrayList<Eventdate> al=new ArrayList<Eventdate>();
@@ -41,6 +45,7 @@ public class TestNotificationsController {
 		e.setType(EType.DATE_SINGLEUSER);
 		e.setOrganisator(u1);
 		e.setVotingactive(true);
+		assertTrue(new NewEventController().createEvent(e));
 		Notification note=n.createNotification(NType.EVENT_NEW, u1,e );
 		
 		assertNotNull(note);
@@ -62,8 +67,25 @@ public class TestNotificationsController {
 		n1.setTrigger(null);
 		
 		assertFalse(n.addNotification(n1));
-		
 		assertFalse(n.markAsRead(null));
+		
+		assertTrue(evC.addUser(u2, e));
+		e = evC.getEventById(e.getID());
+		assertNotNull(e);
+		
+		n1.setTrigger(e);
+		assertTrue(n.addNotification(n1));
+		assertEquals(n.getNotificationsForUser(u2).size(), 1);
+		
+		for(Participant p:e.getParticipants()) p.setUser(null);
+		
+		assertTrue(evC.updateEvent(e));
+		assertTrue(n.addNotification(n1));
+		
+		for(Participant p:e.getParticipants())  p.setUser(u2);
+		
+		assertTrue(evC.updateEvent(e));
+		assertTrue(n.addNotification(n1));
 	}
 
 	/**

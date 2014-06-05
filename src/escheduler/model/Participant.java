@@ -6,7 +6,7 @@ import javax.persistence.*;
  * A Participant is a User who participates in an Event, got a State (invited/participating) and has either already voted or not (null).
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 @Entity
 public class Participant 
@@ -39,6 +39,13 @@ public class Participant
 		
 	}
 	
+	/**
+	 * Instantiates a new Participant
+	 * 
+	 * @param status the status
+	 * @param user the user
+	 * @param event the event
+	 */
 	public Participant(boolean status, User user, Event event)
 	{
 		this.status = status;

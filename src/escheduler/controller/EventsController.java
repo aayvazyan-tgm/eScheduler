@@ -13,7 +13,7 @@ import escheduler.model.*;
  * comments, event dates, votes, comments
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 05.06.2014
  */
 public class EventsController 
 {
@@ -190,7 +190,7 @@ public class EventsController
 	}
 	
 	/**
-	 * Casts are Vote made by a user for a specific eventdate.
+	 * Casts a Vote made by a user for a specific eventdate.
 	 * 
 	 * @param e The event on which the user voted on.
 	 * @param u The user who voted.

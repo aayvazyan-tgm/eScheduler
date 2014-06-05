@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
+import escheduler.model.Notification;
 import escheduler.view.IViewElement;
 
 /**
@@ -48,17 +49,18 @@ public class SessionManager
 	/**
 	 * Adds a listener.
 	 *
-	 * @param An Element implementing the IViewElement interface.
+	 * @param view An Element implementing the IViewElement interface to add.
 	 */
 	public void addListener(IViewElement view)
 	{
+		if(view == null) return;
 		this.listeners.add(view);
 	}
 	
 	/**
 	 * Removes a listener.
 	 *
-	 * @param An Element implementing the IViewElement interface.
+	 * @param view An Element implementing the IViewElement interface to remove.
 	 */
 	public void removeListener(IViewElement view)
 	{
@@ -71,10 +73,13 @@ public class SessionManager
 	/**
 	 * Notify listeners.
 	 */
-	public void notifyListeners()
+	public void notifyListeners(Notification notification)
 	{
 		for(IViewElement ve:this.listeners)
-			ve.update();
+		{
+			if(ve == null) continue;
+			ve.update(notification);
+		}
 	}
 	
 	/**

@@ -11,7 +11,7 @@ import escheduler.model.*;
  * All Notifications are handled trough this class.
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 public class NotificationsController
 {
@@ -63,8 +63,9 @@ public class NotificationsController
 			
 			for(Participant participant: notification.getTrigger().getParticipants())
 			{
-				if(!participant.isStatus()) continue;
-				notification.setTarget(participant.getUser());
+				if(participant.getUser() == null) continue;
+				Notification notif = this.createNotification(notification.getType(), participant.getUser(), notification.getTrigger());
+				notifications.add(notif);
 			}
 		}
 		
@@ -73,15 +74,11 @@ public class NotificationsController
 		// and finally save all of them to the database
 		try
 		{
-			for(Notification notif: notifications)
-			{
-				session.save(notif);
-			}
+			for(Notification notif: notifications) session.save(notif);
 			tx.commit();
 			
 			// notify all listeners
-			SessionManager.getInstance().notifyListeners();
-			
+			for(Notification notif: notifications) SessionManager.getInstance().notifyListeners(notif);
 			return true;
 		}
 		catch(RuntimeException re1)

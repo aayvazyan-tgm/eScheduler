@@ -11,7 +11,7 @@ import org.hibernate.annotations.Cascade;
  * A date proposal on an event, aka. a voting option.
  * 
  * @author Andreas Willinger
- * @version 01.06.2014
+ * @version 03.06.2014
  */
 @Entity
 public class Eventdate 
@@ -41,6 +41,13 @@ public class Eventdate
 		
 	}
 	
+	/**
+	 * Instantiates a new Eventdate
+	 * 
+	 * @param start the start
+	 * @param end the end
+	 * @param event the event
+	 */
 	public Eventdate(Date start, Date end, Event event)
 	{
 		this.start = start;

@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 
 import escheduler.controller.SessionManager;
+import escheduler.model.Notification;
 import escheduler.view.IViewElement;
 
 
@@ -31,7 +32,8 @@ public class TestSessionManager {
 		TestIView ti3=new TestIView();
 		sm.addListener(ti);
 		sm.addListener(ti2);
-		sm.notifyListeners();
+		sm.addListener(null);
+		sm.notifyListeners(new Notification());
 		assertTrue(ti.updated);
 		assertTrue(ti2.updated);
 		sm.addListener(ti3);
@@ -50,7 +52,7 @@ public class TestSessionManager {
 class TestIView implements IViewElement{
 	public boolean updated=false;
 	@Override
-	public void update() {
+	public void update(Notification notification) {
 		this.updated=true;
 	}
 	
