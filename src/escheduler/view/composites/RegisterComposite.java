@@ -36,7 +36,7 @@ public class RegisterComposite extends CustomComponent {
 	private MainView mv;
 	/**
 	 * Constructor of RegisterComposite
-	 * @param mainView MainView that contains the Composite
+	 * @param mv MainView that contains the Composite
 	 */
 	public RegisterComposite(MainView mv) {
 		this.mv=mv;

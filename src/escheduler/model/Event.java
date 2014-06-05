@@ -1,7 +1,5 @@
-
 package escheduler.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -85,8 +83,6 @@ public class Event
 	 * @param name the name
 	 * @param organisator the organisator
 	 * @param type the type
-	 * @param participants the participants
-	 * @param eventdates the eventdates
 	 */
 	public Event(String name, User organisator, EType type)
 	{

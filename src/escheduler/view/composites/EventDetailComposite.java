@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -23,8 +22,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
 import escheduler.controller.EventsController;
-import escheduler.controller.LoginController;
-import escheduler.controller.NewEventController;
 import escheduler.controller.listener.AddCommentListener;
 import escheduler.controller.listener.EventDeleteListener;
 import escheduler.controller.listener.RemoveCommentListener;
@@ -536,17 +533,7 @@ public class EventDetailComposite extends CustomComponent {
 		}
 		
 		commentTable.removeAllItems();
-		Collection<Comment> colCo = e.getComments();
-		Iterator<Comment> itCo = colCo.iterator();
-		while(itCo.hasNext()) {
-			Comment co = itCo.next();
-			String text = co.getText();
-			String author = co.getAuthor().getUsername();
-			Button b = new Button();
-			b.setCaption("X");
-			Long id = co.getID();
-			b.addClickListener(new RemoveCommentListener(mv,id));
-		}
+		loadComments();
 		
 		return true;
 	}
@@ -706,10 +693,11 @@ public class EventDetailComposite extends CustomComponent {
 		Iterator<Comment> it = col.iterator();
 		while(it.hasNext()) {
 			Comment c = it.next();
+			Long id = c.getID();
 			Button b = new Button();
 			b.setCaption("X");
-			b.addClickListener(new RemoveCommentListener(mv,c.getID()));
-			commentTable.addItem(new Object[] {new SimpleDateFormat("dd/MM/yyy").format(c.getDate()), c.getAuthor().getUsername(), c.getText(), b},c.getID());
+			b.addClickListener(new RemoveCommentListener(mv,id));
+			commentTable.addItem(new Object[] {new SimpleDateFormat("dd/MM/yyy").format(c.getDate()), c.getAuthor().getUsername(), c.getText(), b},id);
 		}
 		
 	}

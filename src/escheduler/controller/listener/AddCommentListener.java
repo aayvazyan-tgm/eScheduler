@@ -14,6 +14,7 @@ import escheduler.view.composites.LoggedInComposite;
  * @version Jun 5, 2014
  *
  */
+@SuppressWarnings("serial")
 public class AddCommentListener implements ClickListener {
 
 	private MainView mv;

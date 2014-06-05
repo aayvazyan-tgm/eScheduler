@@ -16,6 +16,7 @@ import escheduler.view.composites.LoggedInComposite;
  * @version Jun 5, 2014
  *
  */
+@SuppressWarnings("serial")
 public class RemoveCommentListener implements ClickListener {
 
 	private MainView mv;
@@ -23,6 +24,7 @@ public class RemoveCommentListener implements ClickListener {
 	
 	public RemoveCommentListener(MainView mv, Long id) {
 		this.mv = mv;
+		this.id = id;
 	}
 	
 	/* (non-Javadoc)
