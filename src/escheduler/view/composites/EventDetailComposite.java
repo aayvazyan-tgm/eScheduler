@@ -14,10 +14,13 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
 import escheduler.controller.EventsController;
+import escheduler.controller.listener.EventDeleteListener;
+import escheduler.controller.listener.RemoveCommentListener;
 import escheduler.controller.listener.RemoveUserListener;
 import escheduler.controller.listener.VoteListener;
 import escheduler.model.Comment;
@@ -40,7 +43,7 @@ public class EventDetailComposite extends CustomComponent {
 	private VerticalSplitPanel splitPanel;
 	private TabSheet detailTabs;
 	private Panel commentPanel;
-	private VerticalLayout commentLayout;
+	private AbsoluteLayout commentLayout;
 	private ListSelect participantList;
 	private OptionGroup dateVote;
 	private Panel topPanel;
@@ -50,13 +53,15 @@ public class EventDetailComposite extends CustomComponent {
 	private Button dateButton;
 	private AbsoluteLayout participantLayout;
 	private Button removeUser;
-	private VerticalLayout topLayout;
+	private AbsoluteLayout topLayout;
 	private Label description;
 	private Label organiser;
 	private Label type;
 	private Label eventName;
 	private escheduler.model.Event e;
 	private MainView mv;
+	private Button deleteEvent;
+	private Table commentTable;
 	/**
 	 * The constructor should first build the main layout, set the
 	 * composition root and then do any custom initialization.
@@ -146,15 +151,14 @@ public class EventDetailComposite extends CustomComponent {
 	/**
 	 * Builds the top layout.
 	 *
-	 * @return the vertical layout
+	 * @return the absolute layout
 	 */
-	private VerticalLayout buildTopLayout() {
+	private AbsoluteLayout buildTopLayout() {
 		// common part: create layout
-		topLayout = new VerticalLayout();
+		topLayout = new AbsoluteLayout();
 		topLayout.setImmediate(false);
 		topLayout.setWidth("100.0%");
 		topLayout.setHeight("100.0%");
-		topLayout.setMargin(false);
 		
 		// eventName
 		eventName = new Label();
@@ -162,8 +166,17 @@ public class EventDetailComposite extends CustomComponent {
 		eventName.setStyleName("h1");
 		eventName.setImmediate(false);
 		eventName.setWidth("-1px");
-		eventName.setHeight("31px");
-		topLayout.addComponent(eventName);
+		eventName.setHeight("40px");
+		topLayout.addComponent(eventName,"top:0.0px;left:0.0px;");
+		
+		//deleteEvent
+		deleteEvent = new Button();
+		deleteEvent.setImmediate(false);
+		deleteEvent.setCaption("Delete Event");
+		deleteEvent.setWidth("-1px");
+		deleteEvent.setHeight("-1px");
+		deleteEvent.addClickListener(new EventDeleteListener(mv));
+		topLayout.addComponent(deleteEvent,"top:0.0px;right:0.0px;");
 		
 		// type
 		type = new Label();
@@ -171,8 +184,8 @@ public class EventDetailComposite extends CustomComponent {
 		type.setCaption("Type:");
 		type.setImmediate(false);
 		type.setWidth("-1px");
-		type.setHeight("-1px");
-		topLayout.addComponent(type);
+		type.setHeight("30px");
+		topLayout.addComponent(type,"top:50.0px;left:0.0px;");
 		
 		// organiser
 		organiser = new Label();
@@ -180,18 +193,17 @@ public class EventDetailComposite extends CustomComponent {
 		organiser.setCaption("Organiser:");
 		organiser.setImmediate(false);
 		organiser.setWidth("-1px");
-		organiser.setHeight("-1px");
-		topLayout.addComponent(organiser);
+		organiser.setHeight("30px");
+		topLayout.addComponent(organiser,"top:80.0px;left:0.0px;");
 		
 		// description
 		description = new Label();
 		description.setCaption("Description:");
 		description.setStyleName("light");
-		description.setCaption("Description");
 		description.setImmediate(false);
 		description.setWidth("100.0%");
-		description.setHeight("-1px");
-		topLayout.addComponent(description);
+		description.setHeight("65px");
+		topLayout.addComponent(description,"top:120.0px;left:0.0px;");
 		
 		return topLayout;
 	}
@@ -264,7 +276,6 @@ public class EventDetailComposite extends CustomComponent {
 		removeUser.addClickListener(new RemoveUserListener(mv));
 		participantLayout.addComponent(removeUser, "top:85%;right:6.0px;");
 		
-		
 		detailTabs.addTab(participantPanel, "Participants", null);
 		
 		// commentPanel
@@ -281,20 +292,25 @@ public class EventDetailComposite extends CustomComponent {
 	 * @return the panel
 	 */
 	private Panel buildCommentPanel() {
-		// common part: create layout
+		// commentPanel
 		commentPanel = new Panel();
 		commentPanel.setImmediate(false);
-		commentPanel.setWidth("100.0%");
-		commentPanel.setHeight("100.0%");
 		
 		// commentLayout
-		commentLayout = new VerticalLayout();
+		commentLayout = new AbsoluteLayout();
 		commentLayout.setImmediate(false);
-		commentLayout.setWidth("100.0%");
-		commentLayout.setHeight("100.0%");
-		commentLayout.setMargin(false);
+		commentLayout.setSizeFull();
 		commentPanel.setContent(commentLayout);
 		commentPanel.setSizeFull();
+		
+		//commentTable
+		commentTable = new Table();
+		commentTable.setImmediate(false);
+		commentTable.setSizeFull();
+		commentTable.addContainerProperty("Author", String.class, null);
+		commentTable.addContainerProperty("Comment", String.class, null);
+		commentTable.addContainerProperty("Remove", Button.class, null);
+		commentLayout.addComponent(commentTable,"top:0.0px;left:0.0px;right:0.0px;");
 		
 		return commentPanel;
 	}
@@ -470,7 +486,6 @@ public class EventDetailComposite extends CustomComponent {
 		setEventName(e.getName());
 		setDescription(e.getDescription());
 		setOrganiser(e.getOrganisator().getUsername());
-		
 		setType(e.getType().name());
 		
 		participantList.removeAllItems();
@@ -500,6 +515,20 @@ public class EventDetailComposite extends CustomComponent {
 			dateVote.addItem(ed);
 			dateVote.setItemCaption(ed, dateText);
 		}
+		
+		commentTable.removeAllItems();
+		Collection<Comment> colCo = e.getComments();
+		Iterator<Comment> itCo = colCo.iterator();
+		while(itCo.hasNext()) {
+			Comment co = itCo.next();
+			String text = co.getText();
+			String author = co.getAuthor().getUsername();
+			Button b = new Button();
+			b.setCaption("X");
+			Long id = co.getID();
+			b.addClickListener(new RemoveCommentListener(mv,id));
+		}
+		
 		return true;
 	}
 
@@ -570,6 +599,41 @@ public class EventDetailComposite extends CustomComponent {
 		else {
 			dateButton.setComponentError(new UserError("You have to select a Date"));
 		}
+		
+	}
+
+
+	
+	/**
+	 * Delete event.
+	 */
+	public void deleteEvent() {
+		if(ec.deleteEvent(e)) {
+			clear();
+			((LoggedInComposite)mv.getContent()).getEvents().getEventList().loadEvents();
+		}
+	}
+
+	
+	/**
+	 * Clear view.
+	 */
+	private void clear() {
+		e = null;
+		eventName.setValue("");
+		organiser.setValue("");
+		type.setValue("");
+		description.setValue("");
+		dateVote.removeAllItems();
+		participantList.removeAllItems();
+	}
+
+
+	/**
+	 * @param id
+	 */
+	public void deleteComment(Long id) {
+		commentTable.removeItem(id);
 		
 	}
 		

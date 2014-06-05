@@ -396,13 +396,13 @@ public class EventsController
 		
 		Logger lg = Logger.getLogger("Debug");
 		
-		e = this.getUpdatedEvent(e, "getEventParticipants");
-		if(e == null) return false;
+		Event e1 = this.getUpdatedEvent(e, "getEventParticipants");
+		if(e1 == null) return false;
 		
 		// first check if none of the users have yet accepted their invites
-		if(e.getParticipants() == null) return false;
+		if(e1.getParticipants() == null) return false;
 		
-		for(Participant participant: e.getParticipants())
+		for(Participant participant: e1.getParticipants())
 		{
 			if(participant.isStatus())
 				return false;

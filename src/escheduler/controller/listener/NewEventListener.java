@@ -95,7 +95,7 @@ public class NewEventListener implements ClickListener{
 					}
 					e.setEventdates(dates);
 					dateCheck = ec.updateEvent(e);
-					
+					e = ec.getEventById(e.getID());
 					if(dateCheck && updateCheck) {
 						//Add the Participants
 						Collection<User> userList =  ne.getUsers(); 

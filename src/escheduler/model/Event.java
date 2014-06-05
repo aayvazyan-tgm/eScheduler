@@ -1,7 +1,9 @@
 
 package escheduler.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Vector;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -83,6 +85,8 @@ public class Event
 	 * @param name the name
 	 * @param organisator the organisator
 	 * @param type the type
+	 * @param participants the participants
+	 * @param eventdates the eventdates
 	 */
 	public Event(String name, User organisator, EType type)
 	{
@@ -90,6 +94,9 @@ public class Event
 		this.votingactive = true;
 		this.organisator = organisator;
 		this.type = type;
+		this.comments = new Vector<Comment>();
+		this.eventdates = new Vector<Eventdate>();
+		this.participants = new Vector<Participant>();
 	}
 	
 	/**

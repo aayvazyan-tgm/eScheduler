@@ -436,7 +436,7 @@ public class NewEventComposite extends CustomComponent {
 					alreadyIn = true;
 				}
 			}
-			if(!alreadyIn) {
+			if(alreadyIn) {
 				setUserError("User already added");
 				return false;
 			}
@@ -503,7 +503,9 @@ public class NewEventComposite extends CustomComponent {
 			setDateError("End Date has to be after Start Date");
 			return false;
 		}
-		if(datePicker1.getValue().before(new Date()) || datePicker1.getValue().before(new Date())) {
+		Long y = new Date().getTime()-86400000;
+		Date yesterday = new Date(y);
+		if(datePicker1.getValue().before(yesterday) || datePicker1.getValue().before(yesterday)) {
 			setDateError("You can't pick Dates that already happened");
 			return false;
 		}

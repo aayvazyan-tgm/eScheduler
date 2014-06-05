@@ -79,7 +79,7 @@ public class TestNotificationsController {
 		
 		for(Participant p:e.getParticipants()) p.setUser(null);
 		
-		assertTrue(evC.updateEvent(e));
+		assertFalse(evC.updateEvent(e));
 		assertTrue(n.addNotification(n1));
 		
 		for(Participant p:e.getParticipants())  p.setUser(u2);

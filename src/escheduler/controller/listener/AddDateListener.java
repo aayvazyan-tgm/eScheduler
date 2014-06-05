@@ -42,9 +42,7 @@ public class AddDateListener implements ClickListener {
 		//Checks if the Event-Source is the expected Button
 		if(ca.equals("Add Date")) {
 			NewEventComposite ne = (NewEventComposite) mv.getContent();
-			boolean bo = ne.addDate();
-			// Sets an error message if adding a date failed
-			if(!bo) ne.setDateError();
+			ne.addDate();
 		}
 	}
 
