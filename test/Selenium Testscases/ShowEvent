@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/eScheduler/" />
-<title>CommentEvent</title>
+<title>ShowEvent</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CommentEvent</td></tr>
+<tr><td rowspan="1" colspan="3">ShowEvent</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=span.v-button-caption</td>
+	<td>css=span.v-button-wrap</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,16 +37,10 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=div.v-table-cell-wrapper</td>
+	<td>waitForElementPresent</td>
+	<td>css=td.v-table-cell-content</td>
 	<td></td>
 </tr>
-<tr>
-	<td>waitForText</td>
-	<td>//div[2]/div/table/tbody/tr/td/div</td>
-	<td>testevent</td>
-</tr>
-
 </tbody></table>
 </body>
 </html>

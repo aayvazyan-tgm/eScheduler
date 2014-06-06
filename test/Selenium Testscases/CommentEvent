@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/eScheduler/" />
-<title>Delete-Event</title>
+<title>CommentEvent</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Delete-Event</td></tr>
+<tr><td rowspan="1" colspan="3">CommentEvent</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -37,9 +37,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=div.v-table-cell-wrapper</td>
-	<td></td>
+	<td>clickAt</td>
+	<td>//div[@id='events']/div/div/div/div/div/div/div/div/div/div[2]/div/div/div/div[2]/div/div[2]/div/table/tbody/tr/td/div</td>
+	<td>5,5</td>
 </tr>
 <tr>
 	<td>waitForText</td>
@@ -47,16 +47,20 @@
 	<td>testevent</td>
 </tr>
 <tr>
-	<td>clickAt</td>
-	<td>//div[2]/div/table/tbody/tr</td>
-	<td>5,5</td>
+	<td>click</td>
+	<td>//div[3]/div/div/table/tbody/tr/td[3]/div/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//input[@type='text']</td>
+	<td>comment</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='eScheduler-824737322']/div/div[2]/div/div[2]/div/div/div/div/div/div[3]/div/div/div/div/div/div/div/div/div[2]/div/div/div/div[9]/div/span/span</td>
+	<td>//div[@id='events']/div/div/div[3]/div/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div[2]/div/div/div/div[3]/div/span/span</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

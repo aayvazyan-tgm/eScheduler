@@ -48,17 +48,17 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=gwt-uid-28</td>
+	<td>id=gwt-uid-29</td>
 	<td>testevent</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=gwt-uid-30</td>
+	<td>id=gwt-uid-31</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=gwt-uid-30</td>
+	<td>id=gwt-uid-31</td>
 	<td>asda</td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=gwt-uid-40</td>
+	<td>id=gwt-uid-41</td>
 	<td>a</td>
 </tr>
 <tr>
@@ -143,7 +143,7 @@
 </tr>
 <tr>
 	<td>clickAt</td>
-	<td>//option[2]</td>
+	<td>css=option[value=&quot;1&quot;]</td>
 	<td>5,5</td>
 </tr>
 <tr>
@@ -151,7 +151,6 @@
 	<td>//div[@id='eScheduler-824737322']/div/div[2]/div/div[2]/div/div/div/div/div/div[3]/div/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div[2]/div/div/div/div[2]/div/span/span</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
