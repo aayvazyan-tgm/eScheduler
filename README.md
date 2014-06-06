@@ -6,7 +6,7 @@ Installation
 ==========
 
 Tomcat has to be installed before building with the ant build file. The role manager-script has to be set in tomcat 7.
-This Project has only been tested wit tomcat 7.
+This Project has only been tested with tomcat 7.
 
 Configuration of the ant file
 ==========
