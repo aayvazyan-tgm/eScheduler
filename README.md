@@ -23,3 +23,13 @@ Your choosen Password and Username for the role manager-script has to bet set in
 5	tomcat.manager.username=user
 
 6	tomcat.manager.password=pass
+
+Persistenz
+==========
+
+Um Persistenz zu gewährleisten muss bei machen systemen im WEB-INF\classes\hibernate.cfg.xml
+folgende zeile von 
+<property name="hibernate.hbm2ddl.auto">create</property> 
+in 
+<property name="hibernate.hbm2ddl.auto">verify</property> 
+geändert werden.
